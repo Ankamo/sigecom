@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PwaInstallModal } from '../pwa/PwaInstallModal';
+import { PwaInstallBanner } from '../pwa/PwaInstallBanner';
 import {
   Sun,
   Moon,
@@ -12,7 +14,9 @@ import {
   Compass,
   Watch,
   Droplet,
-  BookOpen
+  BookOpen,
+  Smartphone,
+  Download
 } from 'lucide-react';
 import { Currency } from '../../types';
 
@@ -35,6 +39,7 @@ export const Navbar: React.FC = () => {
   } = useApp();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isPwaModalOpen, setIsPwaModalOpen] = useState(false);
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -48,11 +53,18 @@ export const Navbar: React.FC = () => {
         </div>
         <div className="mx-auto sm:mx-0 flex items-center gap-4">
           <button
+            onClick={() => setIsPwaModalOpen(true)}
+            className="hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold text-amber-300 bg-amber-500/10 px-2 py-0.5 border border-amber-500/30"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+            <span>Instalar en iOS / Android</span>
+          </button>
+          <button
             onClick={() => setIsQuizOpen(true)}
-            className="hover:text-amber-300 transition-colors flex items-center gap-1 font-medium underline underline-offset-2"
+            className="hover:text-amber-300 transition-colors hidden md:flex items-center gap-1 font-medium underline underline-offset-2"
           >
             <Sparkles className="w-3 h-3 text-amber-400" />
-            Quiz: Encuentra tu Aroma y Reloj Ideal
+            Quiz Aroma & Reloj
           </button>
           <span className="opacity-40">|</span>
           <select
@@ -251,6 +263,15 @@ export const Navbar: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* PWA Installation Modal & Banner */}
+      <PwaInstallModal
+        isOpen={isPwaModalOpen}
+        onClose={() => setIsPwaModalOpen(false)}
+      />
+      <PwaInstallBanner
+        onOpenModal={() => setIsPwaModalOpen(true)}
+      />
     </header>
   );
 };
