@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { LoginModal } from '../auth/LoginModal';
+import logoImg from '../../assets/logo.jpg';
 import {
   BarChart3,
   Package,
@@ -58,7 +59,7 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
           <div className="pb-5 mb-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <img
-                src="/logo.png"
+                src={logoImg}
                 alt="Imperio Lux"
                 className="w-9 h-9 object-contain bg-black border border-amber-500/40 p-0.5 shadow-sm"
                 referrerPolicy="no-referrer"

@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { PwaInstallModal } from '../pwa/PwaInstallModal';
 import { PwaInstallBanner } from '../pwa/PwaInstallBanner';
 import { ContactModal } from '../storefront/ContactModal';
+import logoImg from '../../assets/logo.jpg';
 import {
   Sun,
   Moon,
@@ -96,7 +97,7 @@ export const Navbar: React.FC = () => {
           className="flex items-center gap-3 group text-left focus:outline-none"
         >
           <img
-            src="/logo.png"
+            src={logoImg}
             alt="Imperio Lux Logo"
             className="w-12 h-12 object-contain border border-amber-600/40 dark:border-amber-400/50 bg-black shadow-md group-hover:scale-105 transition-transform"
             referrerPolicy="no-referrer"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import logoImg from '../../assets/logo.jpg';
 import {
   ShieldCheck,
   UserCheck,
@@ -85,7 +86,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 border-b border-zinc-200 dark:border-zinc-800 pb-4">
           <img
-            src="/logo.png"
+            src={logoImg}
             alt="Imperio Lux"
             className="w-14 h-14 object-contain bg-black border border-amber-500/40 p-0.5 shadow-md shrink-0"
             referrerPolicy="no-referrer"
