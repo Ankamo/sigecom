@@ -22,7 +22,7 @@ export const WhatsAppButton: React.FC = () => {
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   // Formatted display number
-  const formattedPhone = whatsappNumber ? `+${whatsappNumber}` : '+525512345678';
+  const formattedPhone = whatsappNumber ? `+${whatsappNumber}` : '+573118444853';
   const encodedMsg = encodeURIComponent(message);
   const waLink = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(waLink)}&color=059669&bg=ffffff`;

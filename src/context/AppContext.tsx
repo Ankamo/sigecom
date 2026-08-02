@@ -104,7 +104,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // WhatsApp Config State
   const [whatsappNumber, setWhatsappNumberState] = useState<string>(() => {
-    return localStorage.getItem('imperio_luz_whatsapp_num') || '525512345678';
+    return localStorage.getItem('imperio_luz_whatsapp_num') || '573118444853';
   });
 
   const setWhatsappNumber = (num: string) => {
