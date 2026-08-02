@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useApp } from '../../context/AppContext';
 import {
   MapPin,
   Phone,
@@ -10,7 +11,7 @@ import {
   MessageCircle,
   CheckCircle2,
   Building2,
-  Globe
+  QrCode
 } from 'lucide-react';
 
 interface ContactModalProps {
@@ -19,6 +20,7 @@ interface ContactModalProps {
 }
 
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
+  const { whatsappNumber } = useApp();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -26,6 +28,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
   const [submitted, setSubmitted] = useState(false);
 
   if (!isOpen) return null;
+
+  const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola Imperio Luz, me gustaría información y asesoría personal.')}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(waLink)}&color=059669&bg=ffffff`;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,15 +128,23 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 </p>
               </div>
 
-              {/* Direct WhatsApp Action Link */}
-              <a
-                href="https://wa.me/525512345678?text=Hola%20Imperio%20Luz,%20deseo%20m%C3%A1s%20informaci%C3%B3n"
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-md"
-              >
-                <MessageCircle className="w-4 h-4" /> Hablar por WhatsApp Directo
-              </a>
+              {/* Direct WhatsApp Action Link & QR Preview */}
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-center space-y-2">
+                <div className="flex items-center justify-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                  <QrCode className="w-4 h-4" /> WhatsApp Directo: +{whatsappNumber}
+                </div>
+                <div className="flex justify-center">
+                  <img src={qrCodeUrl} alt="WhatsApp QR" className="w-24 h-24 border border-emerald-500 p-1 bg-white" />
+                </div>
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-md"
+                >
+                  <MessageCircle className="w-4 h-4" /> Hablar por WhatsApp Directo
+                </a>
+              </div>
             </div>
 
             {/* Inquiry Form Column */}

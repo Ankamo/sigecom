@@ -67,6 +67,9 @@ interface AppContextType {
   addAuditLog: (action: string, details: string, severity?: AuditLog['severity']) => void;
   usersList: User[];
   addUser: (user: User) => void;
+  // WhatsApp Configuration State
+  whatsappNumber: string;
+  setWhatsappNumber: (num: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -98,6 +101,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     MOCK_USERS.superadmin.user,
     MOCK_USERS.admin.user
   ]);
+
+  // WhatsApp Config State
+  const [whatsappNumber, setWhatsappNumberState] = useState<string>(() => {
+    return localStorage.getItem('imperio_luz_whatsapp_num') || '525512345678';
+  });
+
+  const setWhatsappNumber = (num: string) => {
+    const cleanNum = num.replace(/\D/g, '');
+    setWhatsappNumberState(cleanNum);
+    localStorage.setItem('imperio_luz_whatsapp_num', cleanNum);
+  };
 
   const addAuditLog = (action: string, details: string, severity: AuditLog['severity'] = 'info') => {
     const newLog: AuditLog = {
@@ -337,7 +351,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         auditLogs,
         addAuditLog,
         usersList,
-        addUser
+        addUser,
+        whatsappNumber,
+        setWhatsappNumber
       }}
     >
       {children}
