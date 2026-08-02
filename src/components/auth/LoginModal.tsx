@@ -84,15 +84,18 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 border-b border-zinc-200 dark:border-zinc-800 pb-4">
-          <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/40 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-          </div>
+          <img
+            src="/logo.png"
+            alt="Imperio Lux"
+            className="w-14 h-14 object-contain bg-black border border-amber-500/40 p-0.5 shadow-md shrink-0"
+            referrerPolicy="no-referrer"
+          />
           <div>
             <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase tracking-widest border border-amber-500/30">
               <Sparkles className="w-3 h-3" /> Portal de Acceso Seguro
             </div>
             <h2 className="font-serif text-2xl font-bold text-zinc-900 dark:text-amber-100 mt-1">
-              Imperio Luz SaaS
+              Imperio Lux SaaS
             </h2>
           </div>
         </div>

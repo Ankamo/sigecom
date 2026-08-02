@@ -57,12 +57,15 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
           {/* Brand Header */}
           <div className="pb-5 mb-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-amber-600 text-white font-serif font-bold text-base flex items-center justify-center">
-                IL
-              </div>
+              <img
+                src="/logo.png"
+                alt="Imperio Lux"
+                className="w-9 h-9 object-contain bg-black border border-amber-500/40 p-0.5 shadow-sm"
+                referrerPolicy="no-referrer"
+              />
               <div>
                 <span className="font-serif text-sm font-bold tracking-wider block text-zinc-900 dark:text-amber-100 uppercase">
-                  IMPERIO LUZ
+                  IMPERIO LUX
                 </span>
                 <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-widest block">
                   Portal SaaS de Gestión

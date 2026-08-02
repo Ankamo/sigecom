@@ -109,9 +109,28 @@ export const WhatsAppButton: React.FC = () => {
           {/* TAB 1: Chat Message Form */}
           {activeTab === 'chat' && (
             <div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-3 leading-relaxed">
-                Envía un mensaje directo al WhatsApp vinculado (<span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{formattedPhone}</span>):
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-2.5 leading-relaxed">
+                Escribe tu mensaje para enviarlo directamente a nuestro WhatsApp oficial (<span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{formattedPhone}</span>):
               </p>
+
+              {/* Quick Preset Message Chips */}
+              <div className="mb-3 flex flex-wrap gap-1.5">
+                {[
+                  '💬 Solicitar Catálogo',
+                  '⌚ Consulta Alta Relojería',
+                  '🌸 Asesoría de Perfumes',
+                  '📍 Cita Privada en Atelier'
+                ].map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => setMessage(`Hola Imperio Luz, deseo ${chip.replace(/^[^\s]+\s/, '').toLowerCase()}.`)}
+                    className="text-[10px] px-2 py-1 bg-zinc-100 hover:bg-emerald-100 dark:bg-zinc-800 dark:hover:bg-emerald-950/60 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
 
               <form onSubmit={handleSend} className="space-y-3">
                 <textarea
@@ -119,14 +138,14 @@ export const WhatsAppButton: React.FC = () => {
                   onChange={(e) => setMessage(e.target.value)}
                   rows={3}
                   className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-emerald-500 font-sans resize-none"
-                  placeholder="Escribe tu mensaje..."
+                  placeholder="Escribe tu mensaje aquí..."
                 />
 
                 <button
                   type="submit"
                   className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors"
                 >
-                  <Send className="w-3.5 h-3.5" /> Iniciar Chat por WhatsApp
+                  <Send className="w-3.5 h-3.5" /> Enviar Mensaje por WhatsApp
                 </button>
               </form>
             </div>

@@ -95,17 +95,18 @@ export const Navbar: React.FC = () => {
           }}
           className="flex items-center gap-3 group text-left focus:outline-none"
         >
-          <div className="w-10 h-10 rounded-none border border-amber-600/40 dark:border-amber-400/50 bg-amber-500/5 dark:bg-amber-400/10 flex items-center justify-center transition-all group-hover:border-amber-500 group-hover:bg-amber-500/10">
-            <span className="font-serif font-bold text-amber-700 dark:text-amber-400 text-xl tracking-tighter">
-              IL
-            </span>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Imperio Lux Logo"
+            className="w-12 h-12 object-contain border border-amber-600/40 dark:border-amber-400/50 bg-black shadow-md group-hover:scale-105 transition-transform"
+            referrerPolicy="no-referrer"
+          />
           <div>
-            <span className="font-serif text-xl sm:text-2xl tracking-widest text-zinc-900 dark:text-amber-100 font-semibold block uppercase">
-              IMPERIO LUZ
+            <span className="font-serif text-xl sm:text-2xl tracking-widest text-zinc-900 dark:text-amber-100 font-bold block uppercase">
+              IMPERIO LUX
             </span>
             <span className="text-[10px] tracking-[0.2em] text-amber-700/90 dark:text-amber-400/80 font-sans block uppercase font-medium">
-              El Resplandor del Lujo Atemporal
+              Perfumes & Relojes de Lujo
             </span>
           </div>
         </button>
