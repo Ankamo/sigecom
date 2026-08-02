@@ -168,7 +168,8 @@ export const SaasInventory: React.FC = () => {
               <th className="p-3.5">Pieza</th>
               <th className="p-3.5">SKU</th>
               <th className="p-3.5">Categoría</th>
-              <th className="p-3.5">Precio</th>
+              <th className="p-3.5">Costo & Margen</th>
+              <th className="p-3.5">Precio Venta</th>
               <th className="p-3.5">Stock</th>
               <th className="p-3.5">Estado</th>
               <th className="p-3.5 text-right">Acciones</th>
@@ -202,7 +203,29 @@ export const SaasInventory: React.FC = () => {
                   </span>
                 </td>
 
-                <td className="p-3.5 font-serif font-bold text-zinc-900 dark:text-amber-200">
+                <td className="p-3.5">
+                  {product.costPrice ? (
+                    <div>
+                      <span className="font-mono text-zinc-600 dark:text-zinc-400 block text-[11px]">
+                        {formatPrice(product.costPrice)}
+                      </span>
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold font-mono">
+                        +{product.profitMarginPercent || 30}% ganancia
+                      </span>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="font-mono text-zinc-500 text-[11px]">
+                        {formatPrice(Math.round((product.priceUSD < 10000 ? product.priceUSD * 4000 : product.priceUSD) * 0.7))}
+                      </span>
+                      <span className="text-[10px] text-zinc-400 font-bold font-mono block">
+                        +30% ganancia est.
+                      </span>
+                    </div>
+                  )}
+                </td>
+
+                <td className="p-3.5 font-serif font-bold text-zinc-900 dark:text-amber-300 text-sm">
                   {formatPrice(product.priceUSD)}
                 </td>
 

@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
       <div className="bg-gradient-to-r from-amber-950 via-zinc-900 to-amber-950 text-amber-200/90 text-xs py-1.5 px-4 text-center tracking-widest font-light flex items-center justify-between">
         <div className="hidden sm:flex items-center gap-2 text-amber-400/80">
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          <span>Envío VIP Internacional Gratis en compras superiores a $500</span>
+          <span>Envío VIP Gratis en compras superiores a $ 500.000 COP</span>
         </div>
         <div className="mx-auto sm:mx-0 flex items-center gap-4">
           <button
@@ -80,11 +80,12 @@ export const Navbar: React.FC = () => {
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value as Currency)}
-            className="bg-transparent text-amber-200 cursor-pointer focus:outline-none font-sans text-xs"
+            className="bg-transparent text-amber-200 cursor-pointer focus:outline-none font-sans text-xs font-bold"
           >
-            <option value="USD" className="bg-zinc-900 text-amber-200">USD ($)</option>
-            <option value="EUR" className="bg-zinc-900 text-amber-200">EUR (€)</option>
-            <option value="MXN" className="bg-zinc-900 text-amber-200">MXN ($)</option>
+            <option value="COP" className="bg-zinc-900 text-amber-200">COP ($ Peso Colombiano)</option>
+            <option value="USD" className="bg-zinc-900 text-amber-200">USD ($ Dólar)</option>
+            <option value="EUR" className="bg-zinc-900 text-amber-200">EUR (€ Euro)</option>
+            <option value="MXN" className="bg-zinc-900 text-amber-200">MXN ($ Peso Mexicano)</option>
           </select>
         </div>
       </div>

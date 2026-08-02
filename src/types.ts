@@ -1,6 +1,6 @@
 export type ThemeMode = 'day' | 'night';
 export type ViewMode = 'storefront' | 'saas_dashboard';
-export type Currency = 'USD' | 'EUR' | 'MXN';
+export type Currency = 'COP' | 'USD' | 'EUR' | 'MXN';
 
 export type UserRole = 'superadmin' | 'admin';
 
@@ -52,6 +52,8 @@ export interface Product {
   brand: string;
   category: ProductCategory;
   priceUSD: number;
+  costPrice?: number;
+  profitMarginPercent?: number;
   rating: number;
   reviewsCount: number;
   image: string;

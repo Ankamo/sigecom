@@ -80,7 +80,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [themeMode, setThemeMode] = useState<ThemeMode>('night'); // Default luxury dark/night mode
   const [viewMode, setViewMode] = useState<ViewMode>('storefront');
   const [activeTab, setActiveTab] = useState<string>('explore');
-  const [currency, setCurrency] = useState<Currency>('USD');
+  const [currency, setCurrency] = useState<Currency>('COP');
 
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem('imperio_lux_products_db');
@@ -320,15 +320,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
-  const formatPrice = (priceUSD: number) => {
+  const formatPrice = (priceAmount: number) => {
+    // If amount is small (legacy USD demo product < 10000), convert to COP base (~4,000 COP/USD)
+    const priceCOP = priceAmount < 10000 ? Math.round(priceAmount * 4000) : priceAmount;
+
     switch (currency) {
-      case 'EUR':
-        return `€${Math.round(priceUSD * 0.92).toLocaleString('es-ES')}`;
-      case 'MXN':
-        return `$${Math.round(priceUSD * 18.2).toLocaleString('es-MX')} MXN`;
       case 'USD':
+        return `$${Math.round(priceCOP / 4000).toLocaleString('en-US')} USD`;
+      case 'EUR':
+        return `€${Math.round(priceCOP / 4300).toLocaleString('es-ES')}`;
+      case 'MXN':
+        return `$${Math.round(priceCOP / 220).toLocaleString('es-MX')} MXN`;
+      case 'COP':
       default:
-        return `$${priceUSD.toLocaleString('en-US')}`;
+        return `$ ${Math.round(priceCOP).toLocaleString('es-CO')} COP`;
     }
   };
 

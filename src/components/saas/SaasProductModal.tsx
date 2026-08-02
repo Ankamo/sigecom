@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Product, ProductCategory } from '../../types';
-import { X, Plus, Save, Upload, Link, Image as ImageIcon, Check, Trash2 } from 'lucide-react';
+import { X, Plus, Save, Upload, Link, Image as ImageIcon, Check, Trash2, Calculator } from 'lucide-react';
 
 interface SaasProductModalProps {
   productToEdit?: Product | null;
@@ -12,9 +12,41 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
   const { addProduct, updateProduct } = useApp();
 
   const [name, setName] = useState(productToEdit?.name || '');
-  const [brand, setBrand] = useState(productToEdit?.brand || 'Imperio Luz Parfumerie');
+  const [brand, setBrand] = useState(productToEdit?.brand || 'Imperio Lux Parfumerie');
   const [category, setCategory] = useState<ProductCategory>(productToEdit?.category || 'perfume');
-  const [priceUSD, setPriceUSD] = useState(productToEdit?.priceUSD || 250);
+
+  // Pricing & Profit Margin Calculation State (in COP)
+  const [costPrice, setCostPrice] = useState<number>(
+    productToEdit?.costPrice || (productToEdit?.priceUSD ? (productToEdit.priceUSD < 10000 ? Math.round(productToEdit.priceUSD * 4000 * 0.7) : Math.round(productToEdit.priceUSD * 0.7)) : 150000)
+  );
+  const [profitMargin, setProfitMargin] = useState<number>(
+    productToEdit?.profitMarginPercent || 30
+  );
+  const initialSelling = productToEdit?.priceUSD
+    ? (productToEdit.priceUSD < 10000 ? Math.round(productToEdit.priceUSD * 4000) : productToEdit.priceUSD)
+    : Math.round(150000 * 1.3);
+
+  const [priceUSD, setPriceUSD] = useState<number>(initialSelling);
+
+  const handleCostPriceChange = (newCost: number) => {
+    setCostPrice(newCost);
+    const calculatedSelling = Math.round(newCost * (1 + profitMargin / 100));
+    setPriceUSD(calculatedSelling);
+  };
+
+  const handleProfitMarginChange = (newMargin: number) => {
+    setProfitMargin(newMargin);
+    const calculatedSelling = Math.round(costPrice * (1 + newMargin / 100));
+    setPriceUSD(calculatedSelling);
+  };
+
+  const handleSellingPriceChange = (newSelling: number) => {
+    setPriceUSD(newSelling);
+    if (costPrice > 0) {
+      const calculatedMargin = Math.round(((newSelling - costPrice) / costPrice) * 100);
+      setProfitMargin(calculatedMargin);
+    }
+  };
   const [stockQuantity, setStockQuantity] = useState(productToEdit?.stockQuantity || 10);
   const [sku, setSku] = useState(productToEdit?.sku || `IMP-${Date.now().toString().slice(-6)}`);
   const [luxuryTier, setLuxuryTier] = useState(productToEdit?.luxuryTier || 'Colección Privada');
@@ -72,6 +104,8 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
       brand,
       category,
       priceUSD: Number(priceUSD),
+      costPrice: Number(costPrice),
+      profitMarginPercent: Number(profitMargin),
       rating: productToEdit?.rating || 4.9,
       reviewsCount: productToEdit?.reviewsCount || 10,
       image: finalImage,
@@ -164,16 +198,92 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
               />
             </div>
 
-            <div>
-              <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Precio (USD):</label>
-              <input
-                required
-                type="number"
-                min="10"
-                value={priceUSD}
-                onChange={(e) => setPriceUSD(Number(e.target.value))}
-                className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 px-3 py-2 text-zinc-900 dark:text-amber-100"
-              />
+            {/* 💰 CÁLCULO DE PRECIOS Y MARGEN DE GANANCIA EN PESOS COLOMBIANOS (COP) */}
+            <div className="sm:col-span-2 p-4 bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/30 space-y-3">
+              <div className="flex items-center justify-between border-b border-amber-500/20 pb-2">
+                <span className="font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5 uppercase text-xs">
+                  <Calculator className="w-4 h-4 text-amber-500" />
+                  Estructura de Precios (Pesos Colombianos - COP)
+                </span>
+                <span className="text-[10px] bg-amber-500/20 text-amber-400 dark:text-amber-300 px-2 py-0.5 border border-amber-500/40 font-mono font-bold">
+                  Cálculo Automático
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* PRECIO DE COSTO */}
+                <div>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Precio de Costo ($ COP):
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-2.5 top-2 text-zinc-500 dark:text-zinc-400 font-bold">$</span>
+                    <input
+                      required
+                      type="number"
+                      min="0"
+                      step="1000"
+                      value={costPrice}
+                      onChange={(e) => handleCostPriceChange(Number(e.target.value))}
+                      placeholder="Ej: 150000"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 pl-7 pr-3 py-2 text-zinc-900 dark:text-amber-100 font-mono font-bold"
+                    />
+                  </div>
+                  <span className="text-[10px] text-zinc-500 mt-0.5 block">Costo de compra/producción</span>
+                </div>
+
+                {/* PORCENTAJE DE GANANCIA */}
+                <div>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    % Ganancia Deseada:
+                  </label>
+                  <div className="relative">
+                    <input
+                      required
+                      type="number"
+                      min="0"
+                      max="500"
+                      step="1"
+                      value={profitMargin}
+                      onChange={(e) => handleProfitMarginChange(Number(e.target.value))}
+                      placeholder="Ej: 30"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 pl-3 pr-7 py-2 text-zinc-900 dark:text-amber-100 font-mono font-bold"
+                    />
+                    <span className="absolute right-2.5 top-2 text-zinc-500 dark:text-zinc-400 font-bold">%</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-500 mt-0.5 block">Margen sobre el costo</span>
+                </div>
+
+                {/* PRECIO DE VENTA (CALCULADO) */}
+                <div>
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Precio de Venta Final ($ COP):
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-2.5 top-2 text-amber-500 font-bold">$</span>
+                    <input
+                      required
+                      type="number"
+                      min="0"
+                      step="1000"
+                      value={priceUSD}
+                      onChange={(e) => handleSellingPriceChange(Number(e.target.value))}
+                      className="w-full bg-white dark:bg-zinc-950 border border-amber-500/60 pl-7 pr-3 py-2 text-amber-700 dark:text-amber-300 font-mono font-extrabold text-sm"
+                    />
+                  </div>
+                  <span className="text-[10px] text-amber-600 dark:text-amber-400 mt-0.5 block font-semibold">Precio al público final</span>
+                </div>
+              </div>
+
+              {/* MARGEN DE UTILIDAD METRIC BADGE */}
+              <div className="flex flex-wrap items-center justify-between p-2.5 bg-zinc-900/80 border border-amber-500/20 text-[11px] gap-2">
+                <span className="text-zinc-300">
+                  Ganancia neta estimada: <strong className="text-emerald-400 font-mono">${(priceUSD - costPrice).toLocaleString('es-CO')} COP</strong> por unidad
+                </span>
+                <span className="text-amber-300 font-bold font-mono bg-amber-500/20 px-2 py-0.5 border border-amber-500/30">
+                  Margen: {profitMargin}%
+                </span>
+              </div>
             </div>
 
             <div>
