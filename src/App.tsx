@@ -16,6 +16,8 @@ import { SaasInventory } from './components/saas/SaasInventory';
 import { SaasCRM } from './components/saas/SaasCRM';
 import { SaasOrders } from './components/saas/SaasOrders';
 import { SaasAiConcierge } from './components/saas/SaasAiConcierge';
+import { SaasUsersManagement } from './components/saas/SaasUsersManagement';
+import { SaasAuditLogs } from './components/saas/SaasAuditLogs';
 
 const MainAppContent: React.FC = () => {
   const { viewMode, activeTab } = useApp();
@@ -28,6 +30,8 @@ const MainAppContent: React.FC = () => {
         {activeTab === 'crm' && <SaasCRM />}
         {activeTab === 'orders' && <SaasOrders />}
         {activeTab === 'ai_concierge' && <SaasAiConcierge />}
+        {activeTab === 'users_management' && <SaasUsersManagement />}
+        {activeTab === 'audit_logs' && <SaasAuditLogs />}
       </SaasLayout>
     );
   }

@@ -6,12 +6,16 @@ import {
   Product,
   CartItem,
   Order,
-  CustomerVIP
+  CustomerVIP,
+  User,
+  AuditLog
 } from '../types';
 import {
   INITIAL_PRODUCTS,
   INITIAL_ORDERS,
-  INITIAL_CUSTOMERS
+  INITIAL_CUSTOMERS,
+  MOCK_USERS,
+  INITIAL_AUDIT_LOGS
 } from '../data/mockData';
 
 interface AppContextType {
@@ -52,6 +56,17 @@ interface AppContextType {
   setIsCheckoutOpen: (open: boolean) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  // User & Auth State
+  currentUser: User | null;
+  isLoginModalOpen: boolean;
+  setIsLoginModalOpen: (open: boolean) => void;
+  login: (username: string, password: string) => { success: boolean; error?: string };
+  logout: () => void;
+  switchUserRole: (role: 'superadmin' | 'admin') => void;
+  auditLogs: AuditLog[];
+  addAuditLog: (action: string, details: string, severity?: AuditLog['severity']) => void;
+  usersList: User[];
+  addUser: (user: User) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -74,6 +89,74 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // User & Authentication State
+  const [currentUser, setCurrentUser] = useState<User | null>(MOCK_USERS.superadmin.user); // Default to superadmin logged in for quick review
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
+  const [usersList, setUsersList] = useState<User[]>([
+    MOCK_USERS.superadmin.user,
+    MOCK_USERS.admin.user
+  ]);
+
+  const addAuditLog = (action: string, details: string, severity: AuditLog['severity'] = 'info') => {
+    const newLog: AuditLog = {
+      id: `LOG-${Date.now().toString().slice(-6)}`,
+      timestamp: new Date().toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'medium' }).replace('T', ' '),
+      username: currentUser ? currentUser.username : 'invitado',
+      role: currentUser ? currentUser.role : 'admin',
+      action,
+      details,
+      ipAddress: '190.168.1.102',
+      severity
+    };
+    setAuditLogs((prev) => [newLog, ...prev]);
+  };
+
+  const login = (usernameInput: string, passwordInput: string) => {
+    const trimmedUsername = usernameInput.trim().toLowerCase();
+    const matchedAccount = MOCK_USERS[trimmedUsername];
+
+    if (!matchedAccount) {
+      addAuditLog('Intento de Login Fallido', `Usuario no encontrado: ${usernameInput}`, 'warning');
+      return { success: false, error: 'Usuario no registrado en Imperio Luz.' };
+    }
+
+    if (matchedAccount.password !== passwordInput) {
+      addAuditLog('Intento de Login Fallido', `Contraseña incorrecta para usuario: ${trimmedUsername}`, 'critical');
+      return { success: false, error: 'Contraseña incorrecta. Por favor verifique sus credenciales.' };
+    }
+
+    const updatedUser = {
+      ...matchedAccount.user,
+      lastLogin: 'Ahora mismo'
+    };
+
+    setCurrentUser(updatedUser);
+    addAuditLog('Inicio de Sesión Exitoso', `Acceso concedido para ${updatedUser.name} (${updatedUser.role.toUpperCase()})`, 'info');
+    setIsLoginModalOpen(false);
+    return { success: true };
+  };
+
+  const logout = () => {
+    if (currentUser) {
+      addAuditLog('Cierre de Sesión', `Sesión finalizada por el usuario ${currentUser.username}`, 'info');
+    }
+    setCurrentUser(null);
+  };
+
+  const switchUserRole = (role: 'superadmin' | 'admin') => {
+    const targetUser = MOCK_USERS[role]?.user;
+    if (targetUser) {
+      setCurrentUser(targetUser);
+      addAuditLog('Cambio de Rol Rápido', `Rol cambiado a: ${role.toUpperCase()}`, 'info');
+    }
+  };
+
+  const addUser = (newUser: User) => {
+    setUsersList((prev) => [...prev, newUser]);
+    addAuditLog('Creación de Usuario', `Nuevo usuario registrado: ${newUser.username} (${newUser.role})`, 'info');
+  };
 
   // Toggle theme body class
   useEffect(() => {
@@ -244,7 +327,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isCheckoutOpen,
         setIsCheckoutOpen,
         searchTerm,
-        setSearchTerm
+        setSearchTerm,
+        currentUser,
+        isLoginModalOpen,
+        setIsLoginModalOpen,
+        login,
+        logout,
+        switchUserRole,
+        auditLogs,
+        addAuditLog,
+        usersList,
+        addUser
       }}
     >
       {children}

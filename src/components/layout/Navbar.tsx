@@ -16,7 +16,10 @@ import {
   Droplet,
   BookOpen,
   Smartphone,
-  Download
+  Download,
+  UserCheck,
+  Crown,
+  ShieldCheck
 } from 'lucide-react';
 import { Currency } from '../../types';
 
@@ -35,7 +38,9 @@ export const Navbar: React.FC = () => {
     wishlist,
     setIsQuizOpen,
     searchTerm,
-    setSearchTerm
+    setSearchTerm,
+    currentUser,
+    setIsLoginModalOpen
   } = useApp();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -179,6 +184,29 @@ export const Navbar: React.FC = () => {
               <>
                 <Store className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <span className="hidden sm:inline">Boutique</span>
+              </>
+            )}
+          </button>
+
+          {/* User Auth Login Status Button */}
+          <button
+            onClick={() => setIsLoginModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider border bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 hover:border-amber-500 text-zinc-800 dark:text-zinc-200"
+            title="Iniciar Sesión o Cambiar Usuario"
+          >
+            {currentUser ? (
+              <>
+                {currentUser.role === 'superadmin' ? (
+                  <Crown className="w-3.5 h-3.5 text-amber-500" />
+                ) : (
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                )}
+                <span className="hidden md:inline font-mono text-[11px]">{currentUser.username}</span>
+              </>
+            ) : (
+              <>
+                <UserCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span className="hidden md:inline">Acceso</span>
               </>
             )}
           </button>

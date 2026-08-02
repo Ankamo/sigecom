@@ -2,6 +2,30 @@ export type ThemeMode = 'day' | 'night';
 export type ViewMode = 'storefront' | 'saas_dashboard';
 export type Currency = 'USD' | 'EUR' | 'MXN';
 
+export type UserRole = 'superadmin' | 'admin';
+
+export interface User {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  avatar: string;
+  lastLogin?: string;
+  permissions: string[];
+}
+
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  username: string;
+  role: UserRole;
+  action: string;
+  details: string;
+  ipAddress: string;
+  severity: 'info' | 'warning' | 'critical';
+}
+
 export type ProductCategory = 'perfume' | 'watch';
 
 export interface FragranceNotes {

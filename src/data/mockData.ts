@@ -1,4 +1,4 @@
-import { Product, Order, CustomerVIP } from '../types';
+import { Product, Order, CustomerVIP, User, AuditLog } from '../types';
 
 export const INITIAL_PRODUCTS: Product[] = [
   // PERFUMES
@@ -351,6 +351,68 @@ export const SALES_MONTHLY_DATA = [
   { month: 'May', perfumes: 58000, relojes: 128000, total: 186000 },
   { month: 'Jun', perfumes: 64000, relojes: 142000, total: 206000 },
   { month: 'Jul', perfumes: 71000, relojes: 165000, total: 236000 }
+];
+
+export const MOCK_USERS: Record<string, { user: User; password: string }> = {
+  superadmin: {
+    user: {
+      id: 'USR-SUPERADMIN-01',
+      username: 'superadmin',
+      name: 'SuperAdmin Master',
+      email: 'superadmin@imperioluz.com',
+      role: 'superadmin',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      lastLogin: 'Hace 5 minutos',
+      permissions: ['all', 'manage_users', 'view_finances', 'delete_catalog', 'audit_logs', 'system_config', 'manage_inventory', 'manage_orders', 'crm']
+    },
+    password: 'superadmin123*'
+  },
+  admin: {
+    user: {
+      id: 'USR-ADMIN-02',
+      username: 'admin',
+      name: 'Admin Operaciones',
+      email: 'admin@imperioluz.com',
+      role: 'admin',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      lastLogin: 'Hace 1 hora',
+      permissions: ['manage_inventory', 'manage_orders', 'crm', 'view_catalog']
+    },
+    password: 'admin123*'
+  }
+};
+
+export const INITIAL_AUDIT_LOGS: AuditLog[] = [
+  {
+    id: 'LOG-1001',
+    timestamp: '2026-08-02 11:40:12',
+    username: 'superadmin',
+    role: 'superadmin',
+    action: 'Inicio de Sesión Exitoso',
+    details: 'Autenticación mediante credencial máster desde consola central.',
+    ipAddress: '190.168.1.102',
+    severity: 'info'
+  },
+  {
+    id: 'LOG-1002',
+    timestamp: '2026-08-02 10:15:44',
+    username: 'admin',
+    role: 'admin',
+    action: 'Actualización de Inventario',
+    details: 'Stock de "Oud Impérial" ajustado a 18 unidades.',
+    ipAddress: '190.168.1.108',
+    severity: 'info'
+  },
+  {
+    id: 'LOG-1003',
+    timestamp: '2026-08-01 18:30:00',
+    username: 'superadmin',
+    role: 'superadmin',
+    action: 'Exportación de Reporte Financiero',
+    details: 'Descarga de informe consolidado Q2 (Ventas USD 236,000).',
+    ipAddress: '190.168.1.102',
+    severity: 'warning'
+  }
 ];
 
 export const CATEGORY_DISTRIBUTION = [
