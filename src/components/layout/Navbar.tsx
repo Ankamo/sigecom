@@ -20,7 +20,9 @@ import {
   Smartphone,
   UserCheck,
   Crown,
-  ShieldCheck
+  ShieldCheck,
+  LogOut,
+  Lock
 } from 'lucide-react';
 import { Currency } from '../../types';
 
@@ -41,7 +43,8 @@ export const Navbar: React.FC = () => {
     searchTerm,
     setSearchTerm,
     currentUser,
-    setIsLoginModalOpen
+    setIsLoginModalOpen,
+    logout
   } = useApp();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -160,45 +163,48 @@ export const Navbar: React.FC = () => {
 
         {/* Action Controls & Mode Switcher */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Ingresar al Panel Button */}
-          <button
-            onClick={() => {
-              if (currentUser) {
-                setViewMode('saas_dashboard');
-                setActiveTab('analytics');
-              } else {
-                setIsLoginModalOpen(true);
-              }
-            }}
-            className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 border bg-amber-600 text-white hover:bg-amber-500 border-amber-500 shadow-md"
-            title="Ingresar al Panel de Control SaaS"
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            <span className="hidden sm:inline">Ingresar al Panel</span>
-          </button>
+          {currentUser ? (
+            /* Logged in state controls */
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  if (viewMode === 'saas_dashboard') {
+                    setViewMode('storefront');
+                  } else {
+                    setViewMode('saas_dashboard');
+                    setActiveTab('analytics');
+                  }
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider transition-all border bg-amber-600 text-white hover:bg-amber-500 border-amber-500 shadow-md"
+                title="Acceder al Panel de Control SaaS"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                <span className="hidden sm:inline font-mono">
+                  {currentUser.role === 'superadmin' ? '👑 Panel SuperAdmin' : '🛡️ Panel Admin'}
+                </span>
+                <span className="sm:hidden font-mono">Panel</span>
+              </button>
 
-          {/* User Auth Login Status Button */}
-          <button
-            onClick={() => setIsLoginModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-2 text-xs font-bold uppercase tracking-wider border bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 hover:border-amber-500 text-zinc-800 dark:text-zinc-200"
-            title="Iniciar Sesión / Cambiar Usuario"
-          >
-            {currentUser ? (
-              <>
-                {currentUser.role === 'superadmin' ? (
-                  <Crown className="w-3.5 h-3.5 text-amber-500" />
-                ) : (
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                )}
-                <span className="hidden md:inline font-mono text-[11px]">{currentUser.username}</span>
-              </>
-            ) : (
-              <>
-                <UserCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span className="hidden md:inline">Acceso</span>
-              </>
-            )}
-          </button>
+              <button
+                onClick={() => logout()}
+                className="flex items-center gap-1 px-2.5 py-2 text-xs font-bold uppercase tracking-wider border bg-rose-600/10 text-rose-700 dark:text-rose-400 border-rose-500/30 hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                title={`Cerrar sesión activa (${currentUser.username})`}
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Cerrar Sesión</span>
+              </button>
+            </div>
+          ) : (
+            /* Logged out state: ONE SINGLE LOGIN BUTTON requiring username + password */
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 border bg-amber-600 text-white hover:bg-amber-500 border-amber-500 shadow-md hover:scale-105 active:scale-95"
+              title="Iniciar Sesión con Usuario y Contraseña"
+            >
+              <Lock className="w-4 h-4" />
+              <span>Iniciar Sesión</span>
+            </button>
+          )}
 
           {/* Search Trigger */}
           {viewMode === 'storefront' && (

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import logoImg from '../../assets/logo.jpg';
 import {
-  ShieldCheck,
-  UserCheck,
   Key,
   Lock,
   Eye,
@@ -11,9 +9,8 @@ import {
   X,
   Sparkles,
   AlertCircle,
-  Crown,
   CheckCircle2,
-  ArrowRight
+  UserCheck
 } from 'lucide-react';
 
 interface LoginModalProps {
@@ -22,7 +19,7 @@ interface LoginModalProps {
 }
 
 export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
-  const { login, currentUser, logout, switchUserRole } = useApp();
+  const { login, currentUser, logout, setViewMode } = useApp();
 
   const [username, setUsername] = useState('superadmin');
   const [password, setPassword] = useState('superadmin123*');
@@ -41,32 +38,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     if (!res.success) {
       setErrorMsg(res.error || 'Error de autenticación.');
     } else {
-      setSuccessMsg('¡Sesión iniciada correctamente en Imperio Luz!');
+      setSuccessMsg('¡Sesión iniciada correctamente en Imperio Lux!');
+      setViewMode('saas_dashboard');
       setTimeout(() => {
         onClose();
         setSuccessMsg('');
-      }, 1000);
+      }, 600);
     }
-  };
-
-  const fillCredentials = (role: 'superadmin' | 'admin') => {
-    if (role === 'superadmin') {
-      setUsername('superadmin');
-      setPassword('superadmin123*');
-    } else {
-      setUsername('admin');
-      setPassword('admin123*');
-    }
-    setErrorMsg('');
-  };
-
-  const handleQuickLogin = (role: 'superadmin' | 'admin') => {
-    switchUserRole(role);
-    setSuccessMsg(`Iniciado sesión como ${role.toUpperCase()}`);
-    setTimeout(() => {
-      onClose();
-      setSuccessMsg('');
-    }, 600);
   };
 
   return (
@@ -203,69 +181,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             <Key className="w-4 h-4" /> Iniciar Sesión en Dashboard
           </button>
         </form>
-
-        {/* Quick Credentials Presets Box */}
-        <div className="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Accesos Rápidos de Prueba (Credenciales Oficiales)
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {/* SuperAdmin Card */}
-            <div className="p-3 bg-amber-500/10 border border-amber-500/30 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-amber-700 dark:text-amber-300 flex items-center gap-1 uppercase">
-                  <Crown className="w-3.5 h-3.5" /> SuperAdmin
-                </span>
-                <button
-                  type="button"
-                  onClick={() => fillCredentials('superadmin')}
-                  className="text-[10px] text-amber-600 dark:text-amber-400 underline font-semibold hover:text-amber-300"
-                >
-                  Rellenar
-                </button>
-              </div>
-              <p className="text-[11px] text-zinc-600 dark:text-zinc-300 font-mono">
-                User: <strong>superadmin</strong><br />
-                Pass: <strong>superadmin123*</strong>
-              </p>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('superadmin')}
-                className="w-full py-1.5 bg-amber-600 hover:bg-amber-500 text-white text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"
-              >
-                Entrar como SuperAdmin <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-
-            {/* Admin Card */}
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1 uppercase">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Admin
-                </span>
-                <button
-                  type="button"
-                  onClick={() => fillCredentials('admin')}
-                  className="text-[10px] text-emerald-600 dark:text-emerald-400 underline font-semibold hover:text-emerald-300"
-                >
-                  Rellenar
-                </button>
-              </div>
-              <p className="text-[11px] text-zinc-600 dark:text-zinc-300 font-mono">
-                User: <strong>admin</strong><br />
-                Pass: <strong>admin123*</strong>
-              </p>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('admin')}
-                className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"
-              >
-                Entrar como Admin <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

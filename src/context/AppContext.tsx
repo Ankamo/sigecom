@@ -157,6 +157,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addAuditLog('Cierre de Sesión', `Sesión finalizada por el usuario ${currentUser.username}`, 'info');
     }
     setCurrentUser(null);
+    setViewMode('storefront');
   };
 
   const switchUserRole = (role: 'superadmin' | 'admin') => {
