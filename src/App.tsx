@@ -18,21 +18,27 @@ import { SaasOrders } from './components/saas/SaasOrders';
 import { SaasAiConcierge } from './components/saas/SaasAiConcierge';
 import { SaasUsersManagement } from './components/saas/SaasUsersManagement';
 import { SaasAuditLogs } from './components/saas/SaasAuditLogs';
+import { WhatsAppButton } from './components/common/WhatsAppButton';
+import { LoginModal } from './components/auth/LoginModal';
 
 const MainAppContent: React.FC = () => {
-  const { viewMode, activeTab } = useApp();
+  const { viewMode, activeTab, isLoginModalOpen, setIsLoginModalOpen } = useApp();
 
   if (viewMode === 'saas_dashboard') {
     return (
-      <SaasLayout>
-        {activeTab === 'analytics' && <SaasAnalytics />}
-        {activeTab === 'inventory' && <SaasInventory />}
-        {activeTab === 'crm' && <SaasCRM />}
-        {activeTab === 'orders' && <SaasOrders />}
-        {activeTab === 'ai_concierge' && <SaasAiConcierge />}
-        {activeTab === 'users_management' && <SaasUsersManagement />}
-        {activeTab === 'audit_logs' && <SaasAuditLogs />}
-      </SaasLayout>
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans transition-colors duration-300">
+        <SaasLayout>
+          {activeTab === 'analytics' && <SaasAnalytics />}
+          {activeTab === 'inventory' && <SaasInventory />}
+          {activeTab === 'crm' && <SaasCRM />}
+          {activeTab === 'orders' && <SaasOrders />}
+          {activeTab === 'ai_concierge' && <SaasAiConcierge />}
+          {activeTab === 'users_management' && <SaasUsersManagement />}
+          {activeTab === 'audit_logs' && <SaasAuditLogs />}
+        </SaasLayout>
+        <WhatsAppButton />
+        <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      </div>
     );
   }
 
@@ -61,11 +67,13 @@ const MainAppContent: React.FC = () => {
 
       <Footer />
 
-      {/* Global Storefront Modals & Drawers */}
+      {/* Global Floating Elements & Modals */}
+      <WhatsAppButton />
       <ProductDetailModal />
       <FragranceQuizModal />
       <CartDrawer />
       <CheckoutModal />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
   );
 };

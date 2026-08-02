@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { PwaInstallModal } from '../pwa/PwaInstallModal';
 import { PwaInstallBanner } from '../pwa/PwaInstallBanner';
+import { ContactModal } from '../storefront/ContactModal';
 import {
   Sun,
   Moon,
@@ -11,12 +12,11 @@ import {
   Sparkles,
   LayoutDashboard,
   Store,
-  Compass,
-  Watch,
-  Droplet,
+  Home,
+  Package,
   BookOpen,
+  PhoneCall,
   Smartphone,
-  Download,
   UserCheck,
   Crown,
   ShieldCheck
@@ -45,6 +45,7 @@ export const Navbar: React.FC = () => {
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isPwaModalOpen, setIsPwaModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -111,88 +112,74 @@ export const Navbar: React.FC = () => {
 
         {/* Storefront Navigation Tabs */}
         {viewMode === 'storefront' && (
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-sans tracking-wider uppercase">
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-sans tracking-wider uppercase font-semibold">
             <button
               onClick={() => setActiveTab('explore')}
               className={`flex items-center gap-1.5 transition-colors py-1 border-b-2 ${
                 activeTab === 'explore'
-                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-semibold'
+                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-bold'
                   : 'text-zinc-600 dark:text-zinc-400 border-transparent hover:text-amber-600 dark:hover:text-amber-300'
               }`}
             >
-              <Compass className="w-4 h-4" />
-              Colección
+              <Home className="w-4 h-4" />
+              Inicio
             </button>
             <button
               onClick={() => setActiveTab('perfumes')}
               className={`flex items-center gap-1.5 transition-colors py-1 border-b-2 ${
-                activeTab === 'perfumes'
-                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-semibold'
+                activeTab === 'perfumes' || activeTab === 'watches'
+                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-bold'
                   : 'text-zinc-600 dark:text-zinc-400 border-transparent hover:text-amber-600 dark:hover:text-amber-300'
               }`}
             >
-              <Droplet className="w-4 h-4" />
-              Perfumes de Nicho
+              <Package className="w-4 h-4" />
+              Productos
             </button>
             <button
-              onClick={() => setActiveTab('watches')}
-              className={`flex items-center gap-1.5 transition-colors py-1 border-b-2 ${
-                activeTab === 'watches'
-                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-semibold'
-                  : 'text-zinc-600 dark:text-zinc-400 border-transparent hover:text-amber-600 dark:hover:text-amber-300'
-              }`}
+              onClick={() => setIsContactModalOpen(true)}
+              className="flex items-center gap-1.5 transition-colors py-1 border-b-2 text-zinc-600 dark:text-zinc-400 border-transparent hover:text-amber-600 dark:hover:text-amber-300"
             >
-              <Watch className="w-4 h-4" />
-              Alta Relojería
+              <PhoneCall className="w-4 h-4" />
+              Contactos
             </button>
             <button
               onClick={() => setActiveTab('story')}
               className={`flex items-center gap-1.5 transition-colors py-1 border-b-2 ${
                 activeTab === 'story'
-                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-semibold'
+                  ? 'text-amber-700 dark:text-amber-400 border-amber-600 dark:border-amber-400 font-bold'
                   : 'text-zinc-600 dark:text-zinc-400 border-transparent hover:text-amber-600 dark:hover:text-amber-300'
               }`}
             >
               <BookOpen className="w-4 h-4" />
-              Legado
+              Sobre Nosotros
             </button>
           </nav>
         )}
 
         {/* Action Controls & Mode Switcher */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* SaaS Portal Switcher Button */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Ingresar al Panel Button */}
           <button
             onClick={() => {
-              if (viewMode === 'storefront') {
+              if (currentUser) {
                 setViewMode('saas_dashboard');
                 setActiveTab('analytics');
               } else {
-                setViewMode('storefront');
-                setActiveTab('explore');
+                setIsLoginModalOpen(true);
               }
             }}
-            className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 border rounded-none bg-amber-600/10 hover:bg-amber-600/20 text-amber-800 dark:text-amber-300 border-amber-600/30 dark:border-amber-400/40 shadow-sm"
-            title="Cambiar entre Boutique de Lujo y Panel SaaS de Gestión"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 border bg-amber-600 text-white hover:bg-amber-500 border-amber-500 shadow-md"
+            title="Ingresar al Panel de Control SaaS"
           >
-            {viewMode === 'storefront' ? (
-              <>
-                <LayoutDashboard className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span className="hidden sm:inline">Panel SaaS</span>
-              </>
-            ) : (
-              <>
-                <Store className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span className="hidden sm:inline">Boutique</span>
-              </>
-            )}
+            <LayoutDashboard className="w-4 h-4" />
+            <span className="hidden sm:inline">Ingresar al Panel</span>
           </button>
 
           {/* User Auth Login Status Button */}
           <button
             onClick={() => setIsLoginModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider border bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 hover:border-amber-500 text-zinc-800 dark:text-zinc-200"
-            title="Iniciar Sesión o Cambiar Usuario"
+            className="flex items-center gap-1.5 px-2.5 py-2 text-xs font-bold uppercase tracking-wider border bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 hover:border-amber-500 text-zinc-800 dark:text-zinc-200"
+            title="Iniciar Sesión / Cambiar Usuario"
           >
             {currentUser ? (
               <>
@@ -292,7 +279,11 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* PWA Installation Modal & Banner */}
+      {/* Modals */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
       <PwaInstallModal
         isOpen={isPwaModalOpen}
         onClose={() => setIsPwaModalOpen(false)}
