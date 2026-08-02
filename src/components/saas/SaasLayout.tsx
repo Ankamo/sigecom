@@ -42,11 +42,11 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
           <div className="pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-amber-600 text-white font-serif font-bold text-base flex items-center justify-center">
-                A&C
+                IL
               </div>
               <div>
                 <span className="font-serif text-sm font-bold tracking-wider block text-zinc-900 dark:text-amber-100 uppercase">
-                  AURA & CHRONOS
+                  IMPERIO LUZ
                 </span>
                 <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-widest block">
                   Portal SaaS de Gestión

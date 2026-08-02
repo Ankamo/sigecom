@@ -48,7 +48,7 @@ export const PwaInstallBanner: React.FC<PwaInstallBannerProps> = ({ onOpenModal 
           </div>
           <div>
             <div className="flex items-center gap-1 text-[10px] uppercase font-bold text-amber-400 tracking-wider">
-              <Sparkles className="w-3 h-3" /> App Móvil AURA & CHRONOS
+              <Sparkles className="w-3 h-3" /> App Móvil Imperio Luz
             </div>
             <p className="text-xs font-semibold text-zinc-100">
               Instala la aplicación en tu iOS o Android

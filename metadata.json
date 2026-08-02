@@ -1,6 +1,6 @@
 {
-  "name": "AURA & CHRONOS",
-  "description": "Sitio web de lujo y sistema de gestión SaaS para perfumes de nicho y alta relojería con modo día/noche.",
+  "name": "Imperio Luz",
+  "description": "Boutique de Alta Perfumería y Horlogerie — El Resplandor del Lujo Atemporal.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

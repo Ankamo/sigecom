@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
     navigator.serviceWorker
       .register('/sw.js')
       .then((reg) => {
-        console.log('AURA & CHRONOS ServiceWorker registrado exitosamente:', reg.scope);
+        console.log('Imperio Luz ServiceWorker registrado exitosamente:', reg.scope);
       })
       .catch((err) => {
         console.log('Error registrando ServiceWorker:', err);

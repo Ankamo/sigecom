@@ -75,7 +75,7 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
               <Sparkles className="w-3 h-3" /> App PWA Instalable
             </div>
             <h2 className="font-serif text-xl sm:text-2xl font-bold text-zinc-900 dark:text-amber-100 mt-1">
-              Instalar AURA & CHRONOS
+              Instalar Imperio Luz
             </h2>
           </div>
         </div>
@@ -88,7 +88,7 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
               ¡App Instalada Correctamente!
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto">
-              Ya estás disfrutando de AURA & CHRONOS en modo aplicación independiente en tu dispositivo.
+              Ya estás disfrutando de Imperio Luz en modo aplicación independiente en tu dispositivo.
             </p>
             <button
               onClick={onClose}
@@ -174,7 +174,7 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
                     Selecciona <strong className="text-amber-700 dark:text-amber-300">"Instalar aplicación"</strong> o <strong className="text-amber-700 dark:text-amber-300">"Agregar a la pantalla principal"</strong>.
                   </li>
                   <li className="leading-relaxed">
-                    Confirma la instalación y abre AURA & CHRONOS desde tu menú de aplicaciones.
+                    Confirma la instalación y abre Imperio Luz desde tu menú de aplicaciones.
                   </li>
                 </ol>
               </div>

@@ -91,15 +91,15 @@ export const Navbar: React.FC = () => {
         >
           <div className="w-10 h-10 rounded-none border border-amber-600/40 dark:border-amber-400/50 bg-amber-500/5 dark:bg-amber-400/10 flex items-center justify-center transition-all group-hover:border-amber-500 group-hover:bg-amber-500/10">
             <span className="font-serif font-bold text-amber-700 dark:text-amber-400 text-xl tracking-tighter">
-              A&C
+              IL
             </span>
           </div>
           <div>
             <span className="font-serif text-xl sm:text-2xl tracking-widest text-zinc-900 dark:text-amber-100 font-semibold block uppercase">
-              AURA & CHRONOS
+              IMPERIO LUZ
             </span>
-            <span className="text-[10px] tracking-[0.25em] text-amber-700/80 dark:text-amber-400/70 font-sans block uppercase font-medium">
-              Haute Parfumerie & Horlogerie
+            <span className="text-[10px] tracking-[0.2em] text-amber-700/90 dark:text-amber-400/80 font-sans block uppercase font-medium">
+              El Resplandor del Lujo Atemporal
             </span>
           </div>
         </button>

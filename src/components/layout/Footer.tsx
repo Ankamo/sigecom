@@ -60,14 +60,19 @@ export const Footer: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 border border-amber-400/50 flex items-center justify-center font-serif text-amber-400 font-bold text-lg">
-              A&C
+              IL
             </div>
-            <span className="font-serif text-xl tracking-widest text-amber-100 uppercase font-semibold">
-              AURA & CHRONOS
-            </span>
+            <div>
+              <span className="font-serif text-xl tracking-widest text-amber-100 uppercase font-semibold block">
+                IMPERIO LUZ
+              </span>
+              <span className="text-[9px] text-amber-400/80 font-sans tracking-widest uppercase block">
+                El Resplandor del Lujo Atemporal
+              </span>
+            </div>
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed">
-            La convergencia definitiva entre los elixires olfativos de Grasse y la maestría micro-mecánica de la alta relojería de Ginebra.
+            Imperio Luz: La convergencia definitiva entre los elixires olfativos de Grasse y la maestría micro-mecánica de la alta relojería de Ginebra.
           </p>
           <div className="pt-2">
             <span className="text-[10px] uppercase tracking-widest text-amber-400/80 block font-semibold mb-2">
@@ -131,7 +136,7 @@ export const Footer: React.FC = () => {
           <p className="text-xs text-zinc-400 mb-3 leading-relaxed">
             Reciba invitaciones exclusivas a catas olfativas y lanzamientos limitados de alta relojería.
           </p>
-          <form onSubmit={(e) => { e.preventDefault(); alert('Gracias por unirse al Círculo de Privilegios AURA & CHRONOS.'); }} className="space-y-2">
+          <form onSubmit={(e) => { e.preventDefault(); alert('Gracias por unirse al Círculo de Privilegios Imperio Luz.'); }} className="space-y-2">
             <input
               type="email"
               placeholder="Su correo corporativo o personal"
@@ -149,7 +154,7 @@ export const Footer: React.FC = () => {
       </div>
 
       <div className="border-t border-zinc-900 py-6 px-4 text-center text-[11px] text-zinc-500">
-        <p>© 2026 AURA & CHRONOS Haute Parfumerie & Horlogerie S.A. Todos los derechos reservados.</p>
+        <p>© 2026 Imperio Luz — Haute Parfumerie & Horlogerie S.A. Todos los derechos reservados.</p>
       </div>
     </footer>
   );

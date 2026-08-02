@@ -12,11 +12,11 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
   const { addProduct, updateProduct } = useApp();
 
   const [name, setName] = useState(productToEdit?.name || '');
-  const [brand, setBrand] = useState(productToEdit?.brand || 'AURA Haute Parfumerie');
+  const [brand, setBrand] = useState(productToEdit?.brand || 'Imperio Luz Parfumerie');
   const [category, setCategory] = useState<ProductCategory>(productToEdit?.category || 'perfume');
   const [priceUSD, setPriceUSD] = useState(productToEdit?.priceUSD || 250);
   const [stockQuantity, setStockQuantity] = useState(productToEdit?.stockQuantity || 10);
-  const [sku, setSku] = useState(productToEdit?.sku || `AUR-${Date.now().toString().slice(-6)}`);
+  const [sku, setSku] = useState(productToEdit?.sku || `IMP-${Date.now().toString().slice(-6)}`);
   const [luxuryTier, setLuxuryTier] = useState(productToEdit?.luxuryTier || 'Colección Privada');
   const [description, setDescription] = useState(productToEdit?.description || '');
   const [image, setImage] = useState(productToEdit?.image || 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80');
