@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Product, ProductCategory } from '../../types';
-import { X, Plus, Save } from 'lucide-react';
+import { X, Plus, Save, Upload, Link, Image as ImageIcon, Check, Trash2 } from 'lucide-react';
 
 interface SaasProductModalProps {
   productToEdit?: Product | null;
@@ -19,8 +19,33 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
   const [sku, setSku] = useState(productToEdit?.sku || `IMP-${Date.now().toString().slice(-6)}`);
   const [luxuryTier, setLuxuryTier] = useState(productToEdit?.luxuryTier || 'Colección Privada');
   const [description, setDescription] = useState(productToEdit?.description || '');
-  const [image, setImage] = useState(productToEdit?.image || 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80');
+  const [image, setImage] = useState(productToEdit?.image || '');
   const [gender, setGender] = useState<'Unisex' | 'Homme' | 'Femme'>(productToEdit?.gender || 'Unisex');
+
+  // Image Upload vs URL state
+  const [imageMode, setImageMode] = useState<'upload' | 'url'>(
+    productToEdit?.image && !productToEdit.image.startsWith('data:') ? 'url' : 'upload'
+  );
+  const [uploadFileName, setUploadFileName] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 8 * 1024 * 1024) {
+        alert('El archivo es demasiado grande (máximo 8MB).');
+        return;
+      }
+      setUploadFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Fragrance specific
   const [topNotes, setTopNotes] = useState(productToEdit?.fragranceNotes?.top.join(', ') || 'Azafrán, Bergamota');
@@ -34,6 +59,13 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const defaultFallbackImage =
+      category === 'perfume'
+        ? 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80'
+        : 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=80';
+
+    const finalImage = image.trim() || defaultFallbackImage;
+
     const productData: Product = {
       id: productToEdit?.id || `prod-${Date.now()}`,
       name,
@@ -42,7 +74,7 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
       priceUSD: Number(priceUSD),
       rating: productToEdit?.rating || 4.9,
       reviewsCount: productToEdit?.reviewsCount || 10,
-      image,
+      image: finalImage,
       tags: ['Alta Gama', luxuryTier],
       inStock: Number(stockQuantity) > 0,
       stockQuantity: Number(stockQuantity),
@@ -183,15 +215,113 @@ export const SaasProductModal: React.FC<SaasProductModalProps> = ({ productToEdi
               </select>
             </div>
 
-            <div className="sm:col-span-2">
-              <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">URL de Imagen (Unsplash):</label>
-              <input
-                required
-                type="text"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 px-3 py-2 text-zinc-900 dark:text-amber-100"
-              />
+            <div className="sm:col-span-2 space-y-2 p-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between">
+                <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                  Fotografía del Producto:
+                </label>
+                <div className="flex items-center gap-1 bg-zinc-200 dark:bg-zinc-800 p-0.5 rounded text-[10px] font-bold uppercase">
+                  <button
+                    type="button"
+                    onClick={() => setImageMode('upload')}
+                    className={`px-2.5 py-1 flex items-center gap-1 transition-all ${
+                      imageMode === 'upload'
+                        ? 'bg-amber-600 text-white shadow-sm'
+                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                    }`}
+                  >
+                    <Upload className="w-3 h-3" /> Subir Foto
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImageMode('url')}
+                    className={`px-2.5 py-1 flex items-center gap-1 transition-all ${
+                      imageMode === 'url'
+                        ? 'bg-amber-600 text-white shadow-sm'
+                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                    }`}
+                  >
+                    <Link className="w-3 h-3" /> Enlace URL
+                  </button>
+                </div>
+              </div>
+
+              {imageMode === 'upload' ? (
+                <div className="space-y-3">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-amber-500/40 hover:border-amber-500 bg-amber-500/5 p-4 text-center cursor-pointer transition-all group"
+                  >
+                    <Upload className="w-7 h-7 text-amber-500 mx-auto mb-1 group-hover:scale-110 transition-transform" />
+                    <p className="font-bold text-amber-800 dark:text-amber-300 text-xs">
+                      Haz clic para seleccionar una foto de tu equipo
+                    </p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5">
+                      Soporta JPG, PNG, WEBP (Máx. 8MB)
+                    </p>
+                    {uploadFileName && (
+                      <span className="inline-block mt-2 text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 border border-amber-500/30">
+                        Archivo: {uploadFileName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <input
+                    type="url"
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                    className="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 px-3 py-2 text-zinc-900 dark:text-amber-100"
+                  />
+                  <p className="text-[10px] text-zinc-500 mt-1">
+                    Ingresa una URL directa de imagen externa o de Unsplash
+                  </p>
+                </div>
+              )}
+
+              {/* Live Preview */}
+              {image ? (
+                <div className="pt-2 flex items-center gap-3 bg-zinc-900/60 p-2 border border-amber-500/20">
+                  <img
+                    src={image}
+                    alt="Vista previa"
+                    className="w-14 h-14 object-cover border border-amber-500/40 bg-zinc-950 shrink-0"
+                    referrerPolicy="no-referrer"
+                    onError={() => {
+                      // fallback if image fails to load
+                    }}
+                  />
+                  <div className="flex-1 overflow-hidden">
+                    <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1 uppercase">
+                      <Check className="w-3 h-3" /> Imagen seleccionada
+                    </span>
+                    <p className="text-[10px] text-zinc-400 truncate">
+                      {image.startsWith('data:') ? 'Imagen cargada desde archivo local' : image}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImage('');
+                      setUploadFileName('');
+                      if (fileInputRef.current) fileInputRef.current.value = '';
+                    }}
+                    className="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 rounded"
+                    title="Quitar foto"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             <div className="sm:col-span-2">

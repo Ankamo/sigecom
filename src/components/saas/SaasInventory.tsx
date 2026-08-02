@@ -12,11 +12,20 @@ import {
   AlertTriangle,
   CheckCircle,
   Droplet,
-  Watch
+  Watch,
+  Database,
+  RefreshCw
 } from 'lucide-react';
 
 export const SaasInventory: React.FC = () => {
-  const { products, deleteProduct, updateStock, formatPrice } = useApp();
+  const {
+    products,
+    deleteProduct,
+    updateStock,
+    formatPrice,
+    clearProductsDatabase,
+    seedDefaultProducts
+  } = useApp();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'perfume' | 'watch'>('all');
@@ -62,7 +71,29 @@ export const SaasInventory: React.FC = () => {
           </h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {products.length > 0 ? (
+            <button
+              onClick={() => {
+                if (window.confirm('¿Está seguro de que desea vaciar la base de datos de productos?')) {
+                  clearProductsDatabase();
+                }
+              }}
+              className="px-3 py-2.5 bg-rose-600/10 hover:bg-rose-600 text-rose-700 dark:text-rose-400 hover:text-white border border-rose-500/30 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
+              title="Vaciar todos los productos de la base de datos"
+            >
+              <Trash2 className="w-3.5 h-3.5" /> Vaciar BD
+            </button>
+          ) : (
+            <button
+              onClick={() => seedDefaultProducts()}
+              className="px-3 py-2.5 bg-amber-500/10 hover:bg-amber-600 text-amber-700 dark:text-amber-300 hover:text-white border border-amber-500/40 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
+              title="Cargar productos de demostración"
+            >
+              <RefreshCw className="w-3.5 h-3.5" /> Cargar Demo
+            </button>
+          )}
+
           <button
             onClick={exportCSV}
             className="px-3.5 py-2.5 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs uppercase font-bold tracking-wider flex items-center gap-2"

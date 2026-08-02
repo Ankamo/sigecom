@@ -2,10 +2,19 @@ import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ProductCard } from './ProductCard';
 import { ProductCategory } from '../../types';
-import { Filter, Sparkles, Droplet, Watch, SlidersHorizontal } from 'lucide-react';
+import { Filter, Sparkles, Droplet, Watch, SlidersHorizontal, Database, Plus, RefreshCw, Lock } from 'lucide-react';
 
 export const ProductGrid: React.FC = () => {
-  const { products, activeTab, searchTerm } = useApp();
+  const {
+    products,
+    activeTab,
+    searchTerm,
+    seedDefaultProducts,
+    setViewMode,
+    setActiveTab,
+    currentUser,
+    setIsLoginModalOpen
+  } = useApp();
 
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>(
     activeTab === 'perfumes' ? 'perfume' : activeTab === 'watches' ? 'watch' : 'all'
@@ -157,7 +166,55 @@ export const ProductGrid: React.FC = () => {
       </div>
 
       {/* Product Cards Grid */}
-      {filteredProducts.length === 0 ? (
+      {products.length === 0 ? (
+        /* Empty Database State */
+        <div className="text-center py-16 px-6 bg-zinc-900/40 border border-amber-500/30 shadow-xl space-y-5 my-6">
+          <div className="w-16 h-16 mx-auto bg-amber-500/10 border border-amber-500/40 flex items-center justify-center rounded-full text-amber-400">
+            <Database className="w-8 h-8" />
+          </div>
+
+          <div className="max-w-md mx-auto space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 text-amber-400 text-[10px] font-bold uppercase tracking-widest border border-amber-500/30">
+              <Sparkles className="w-3 h-3" /> Base de Datos Vacía (0 Productos)
+            </span>
+            <h3 className="font-serif text-2xl font-bold text-amber-100">
+              Catálogo de Productos Vacío
+            </h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Actualmente la base de datos de productos no contiene ninguna pieza registrada. Puedes añadir tus propios productos desde el Panel Administrativo de Inventario o cargar datos de muestra.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            {currentUser ? (
+              <button
+                onClick={() => {
+                  setViewMode('saas_dashboard');
+                  setActiveTab('inventory');
+                }}
+                className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg transition-all"
+              >
+                <Plus className="w-4 h-4" /> Agregar Producto en Panel Inventario
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg transition-all"
+              >
+                <Lock className="w-4 h-4" /> Iniciar Sesión para Gestionar Inventario
+              </button>
+            )}
+
+            <button
+              onClick={() => seedDefaultProducts()}
+              className="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-amber-300 border border-amber-500/30 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+            >
+              <RefreshCw className="w-4 h-4" /> Cargar Catálogo Demo de Muestra
+            </button>
+          </div>
+        </div>
+      ) : filteredProducts.length === 0 ? (
+        /* Filtered Empty State */
         <div className="text-center py-16 bg-zinc-50 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-zinc-800">
           <Sparkles className="w-8 h-8 text-amber-500 mx-auto mb-3 opacity-60" />
           <h3 className="font-serif text-lg font-medium text-zinc-900 dark:text-amber-100">

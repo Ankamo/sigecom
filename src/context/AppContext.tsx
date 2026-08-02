@@ -33,6 +33,8 @@ interface AppContextType {
   updateProduct: (product: Product) => void;
   deleteProduct: (id: string) => void;
   updateStock: (id: string, newStock: number) => void;
+  clearProductsDatabase: () => void;
+  seedDefaultProducts: () => void;
   cart: CartItem[];
   addToCart: (product: Product, quantity?: number, selectedSize?: string, engravingText?: string) => void;
   removeFromCart: (productId: string) => void;
@@ -80,7 +82,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeTab, setActiveTab] = useState<string>('explore');
   const [currency, setCurrency] = useState<Currency>('USD');
 
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const saved = localStorage.getItem('imperio_lux_products_db');
+    if (saved !== null) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Error parsing stored products:', e);
+      }
+    }
+    // Base de datos de productos vacía por defecto
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('imperio_lux_products_db', JSON.stringify(products));
+  }, [products]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [wishlist, setWishlist] = useState<string[]>(['perfume-01', 'watch-01']);
@@ -206,6 +223,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  const clearProductsDatabase = () => {
+    setProducts([]);
+    localStorage.setItem('imperio_lux_products_db', JSON.stringify([]));
+    addAuditLog('Vaciado de Base de Datos', 'Base de datos de productos vaciada por el usuario', 'warning');
+  };
+
+  const seedDefaultProducts = () => {
+    setProducts(INITIAL_PRODUCTS);
+    localStorage.setItem('imperio_lux_products_db', JSON.stringify(INITIAL_PRODUCTS));
+    addAuditLog('Semilla de Base de Datos', 'Cargados productos iniciales de demostración', 'info');
+  };
+
   const addToCart = (
     product: Product,
     quantity = 1,
@@ -320,6 +349,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateProduct,
         deleteProduct,
         updateStock,
+        clearProductsDatabase,
+        seedDefaultProducts,
         cart,
         addToCart,
         removeFromCart,
