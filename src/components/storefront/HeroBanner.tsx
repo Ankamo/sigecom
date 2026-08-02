@@ -8,16 +8,16 @@ export const HeroBanner: React.FC = () => {
   return (
     <div className="relative overflow-hidden bg-zinc-950 text-white min-h-[560px] flex items-center border-b border-amber-900/30">
       {/* Background Image Layer with Gradient Overlay */}
-      <div className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity">
+      <div className="absolute inset-0 z-0 opacity-30 mix-blend-luminosity">
         <img
-          src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2000&q=80"
-          alt="Alta Relojeria y Perfumeria de Lujo"
-          className="w-full h-full object-cover object-center transform scale-105 transition-transform duration-10000 animate-pulse"
+          src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=2000&q=80"
+          alt="Haute Parfumerie & Horlogerie de Luxe"
+          className="w-full h-full object-cover object-center transform scale-105 transition-transform duration-[20000ms] animate-pulse"
           referrerPolicy="no-referrer"
         />
       </div>
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-transparent" />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-transparent" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-zinc-950 via-zinc-950/90 to-zinc-950/40" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/20 via-amber-950/10 to-transparent" />
 
       {/* Hero Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

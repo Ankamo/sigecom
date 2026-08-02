@@ -6,47 +6,47 @@ export const Footer: React.FC = () => {
   const { setViewMode, setActiveTab } = useApp();
 
   return (
-    <footer className="bg-zinc-950 text-zinc-300 border-t border-amber-900/30 font-sans">
+    <footer className="bg-zinc-100 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 border-t border-amber-900/10 dark:border-amber-900/30 font-sans transition-colors duration-300">
       {/* Guarantees Bar */}
-      <div className="border-b border-zinc-900 bg-zinc-900/60 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-zinc-200 dark:border-zinc-900 bg-amber-500/5 dark:bg-zinc-900/60 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div className="flex items-center gap-4 justify-center md:justify-start">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-amber-200 font-semibold text-sm uppercase tracking-wider">
+              <h4 className="font-serif text-zinc-900 dark:text-amber-200 font-semibold text-sm uppercase tracking-wider">
                 Autenticidad Certificada
               </h4>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
                 Cada pieza horológica y extracto de perfume cuenta con sello de autenticidad.
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-4 justify-center md:justify-start">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-amber-200 font-semibold text-sm uppercase tracking-wider">
+              <h4 className="font-serif text-zinc-900 dark:text-amber-200 font-semibold text-sm uppercase tracking-wider">
                 Garantía de Por Vida
               </h4>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
                 Servicio de mantenimiento suizo en alta relojería y maceración artesanal.
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-4 justify-center md:justify-start">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
               <Award className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-amber-200 font-semibold text-sm uppercase tracking-wider">
+              <h4 className="font-serif text-zinc-900 dark:text-amber-200 font-semibold text-sm uppercase tracking-wider">
                 Concierge Privado 24/7
               </h4>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
                 Atención personalizada para clientes VIP y grabados hechos a medida.
               </p>
             </div>
@@ -59,26 +59,26 @@ export const Footer: React.FC = () => {
         {/* Brand Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 border border-amber-400/50 flex items-center justify-center font-serif text-amber-400 font-bold text-lg">
+            <div className="w-8 h-8 border border-amber-500/50 flex items-center justify-center font-serif text-amber-600 dark:text-amber-400 font-bold text-lg">
               IL
             </div>
             <div>
-              <span className="font-serif text-xl tracking-widest text-amber-100 uppercase font-semibold block">
+              <span className="font-serif text-xl tracking-widest text-zinc-900 dark:text-amber-100 uppercase font-semibold block">
                 IMPERIO LUZ
               </span>
-              <span className="text-[9px] text-amber-400/80 font-sans tracking-widest uppercase block">
+              <span className="text-[9px] text-amber-700 dark:text-amber-400/80 font-sans tracking-widest uppercase block">
                 El Resplandor del Lujo Atemporal
               </span>
             </div>
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Imperio Luz: La convergencia definitiva entre los elixires olfativos de Grasse y la maestría micro-mecánica de la alta relojería de Ginebra.
           </p>
           <div className="pt-2">
-            <span className="text-[10px] uppercase tracking-widest text-amber-400/80 block font-semibold mb-2">
+            <span className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400/80 block font-semibold mb-2">
               Boutiques Presenciales:
             </span>
-            <div className="text-xs text-zinc-400 space-y-1">
+            <div className="text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
               <p className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-amber-500" /> Rue du Rhône 42, Genéve, Suiza</p>
               <p className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-amber-500" /> Paseo de la Reforma 222, CDMX</p>
             </div>
@@ -87,27 +87,27 @@ export const Footer: React.FC = () => {
 
         {/* Navigation Links */}
         <div>
-          <h4 className="font-serif text-amber-200 text-sm font-semibold tracking-wider uppercase mb-4 border-b border-amber-900/40 pb-2">
+          <h4 className="font-serif text-zinc-900 dark:text-amber-200 text-sm font-semibold tracking-wider uppercase mb-4 border-b border-amber-900/20 dark:border-amber-900/40 pb-2">
             Boutique & Colección
           </h4>
-          <ul className="space-y-2.5 text-xs text-zinc-400">
+          <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
             <li>
-              <button onClick={() => { setViewMode('storefront'); setActiveTab('perfumes'); }} className="hover:text-amber-400 transition-colors">
+              <button onClick={() => { setViewMode('storefront'); setActiveTab('perfumes'); }} className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                 Perfumes de Nicho (Extractos de Oud & Ámbar)
               </button>
             </li>
             <li>
-              <button onClick={() => { setViewMode('storefront'); setActiveTab('watches'); }} className="hover:text-amber-400 transition-colors">
+              <button onClick={() => { setViewMode('storefront'); setActiveTab('watches'); }} className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                 Alta Relojería (Tourbillons & Esqueletos)
               </button>
             </li>
             <li>
-              <button onClick={() => { setViewMode('storefront'); setActiveTab('story'); }} className="hover:text-amber-400 transition-colors">
+              <button onClick={() => { setViewMode('storefront'); setActiveTab('story'); }} className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                 Historia de la Maison & Atelier
               </button>
             </li>
             <li>
-              <button onClick={() => { setViewMode('saas_dashboard'); setActiveTab('analytics'); }} className="text-amber-400/90 font-medium hover:underline flex items-center gap-1">
+              <button onClick={() => { setViewMode('saas_dashboard'); setActiveTab('analytics'); }} className="text-amber-700 dark:text-amber-400 font-bold hover:underline flex items-center gap-1">
                 <Sparkles className="w-3 h-3" /> Acceso a Portal SaaS de Gestión
               </button>
             </li>

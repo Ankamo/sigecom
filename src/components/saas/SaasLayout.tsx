@@ -54,11 +54,11 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
   /* 🔒 REQUIREMENT 2: If user is NOT logged in, block access to dashboard */
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center p-6 font-sans relative overflow-hidden">
+      <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex items-center justify-center p-6 font-sans relative overflow-hidden transition-colors duration-300">
         {/* Background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-md w-full bg-zinc-900 border border-amber-500/40 p-8 shadow-2xl text-center space-y-6">
+        <div className="relative max-w-md w-full bg-white dark:bg-zinc-900 border border-amber-500/40 p-8 shadow-2xl text-center space-y-6">
           <div className="flex justify-center">
             <img
               src={logoImg}

@@ -49,6 +49,8 @@ interface AppContextType {
   orders: Order[];
   addOrder: (order: Order) => void;
   updateOrderStatus: (orderId: string, status: Order['status']) => void;
+  clearOrdersDatabase: () => void;
+  seedDefaultOrders: () => void;
   customers: CustomerVIP[];
   addCustomerNote: (customerId: string, note: string) => void;
   formatPrice: (priceUSD: number) => string;
@@ -77,7 +79,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('night'); // Default luxury dark/night mode
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    const saved = localStorage.getItem('imperio_lux_theme_mode');
+    if (saved === 'day' || saved === 'night') return saved;
+    return 'night'; // Default luxury dark/night mode
+  });
   const [viewMode, setViewMode] = useState<ViewMode>('storefront');
   const [activeTab, setActiveTab] = useState<string>('explore');
   const [currency, setCurrency] = useState<Currency>('COP');
@@ -103,7 +109,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [wishlist, setWishlist] = useState<string[]>(['perfume-01', 'watch-01']);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
+  const [orders, setOrders] = useState<Order[]>(() => {
+    const saved = localStorage.getItem('imperio_lux_orders_db');
+    if (saved !== null) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Error parsing stored orders:', e);
+      }
+    }
+    // Base de datos de pedidos inicia vacía por defecto (0 ventas / $0)
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('imperio_lux_orders_db', JSON.stringify(orders));
+  }, [orders]);
   const [customers, setCustomers] = useState<CustomerVIP[]>(INITIAL_CUSTOMERS);
 
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -190,12 +211,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addAuditLog('Creación de Usuario', `Nuevo usuario registrado: ${newUser.username} (${newUser.role})`, 'info');
   };
 
-  // Toggle theme body class
+  // Toggle theme body & html class
   useEffect(() => {
+    localStorage.setItem('imperio_lux_theme_mode', themeMode);
     if (themeMode === 'night') {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('bg-zinc-950', 'text-zinc-100');
+      document.body.classList.remove('bg-zinc-50', 'text-zinc-900');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.add('bg-zinc-50', 'text-zinc-900');
+      document.body.classList.remove('bg-zinc-950', 'text-zinc-100');
     }
   }, [themeMode]);
 
@@ -310,6 +336,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  const clearOrdersDatabase = () => {
+    setOrders([]);
+    localStorage.setItem('imperio_lux_orders_db', JSON.stringify([]));
+    addAuditLog('Vaciado de Ventas', 'Base de datos de ventas y pedidos reiniciada a $0', 'warning');
+  };
+
+  const seedDefaultOrders = () => {
+    setOrders(INITIAL_ORDERS);
+    localStorage.setItem('imperio_lux_orders_db', JSON.stringify(INITIAL_ORDERS));
+    addAuditLog('Semilla de Ventas', 'Cargados pedidos iniciales de demostración', 'info');
+  };
+
   const addCustomerNote = (customerId: string, note: string) => {
     setCustomers((prev) =>
       prev.map((c) =>
@@ -370,6 +408,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         orders,
         addOrder,
         updateOrderStatus,
+        clearOrdersDatabase,
+        seedDefaultOrders,
         customers,
         addCustomerNote,
         formatPrice,
