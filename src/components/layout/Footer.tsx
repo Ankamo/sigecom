@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { Sparkles, MapPin, Mail, Phone, ShieldCheck, Clock, Award } from 'lucide-react';
+import { Sparkles, MapPin, Mail, Phone, ShieldCheck, Clock, Award, Globe } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { setViewMode, setActiveTab } = useApp();
@@ -59,12 +59,13 @@ export const Footer: React.FC = () => {
         {/* Brand Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 border border-amber-500/50 flex items-center justify-center font-serif text-amber-600 dark:text-amber-400 font-bold text-lg">
-              IL
+            <div className="w-9 h-9 border border-amber-500/50 bg-zinc-950 flex items-center justify-center font-serif text-amber-400 font-bold text-lg relative">
+              <Globe className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <span className="font-serif text-xl tracking-widest text-zinc-900 dark:text-amber-100 uppercase font-semibold block">
+              <span className="font-serif text-xl tracking-widest text-zinc-900 dark:text-amber-100 uppercase font-semibold flex items-center gap-1.5">
                 IMPERIO LUZ
+                <Globe className="w-4 h-4 text-amber-500" title="Imperio Luz Global" />
               </span>
               <span className="text-[9px] text-amber-700 dark:text-amber-400/80 font-sans tracking-widest uppercase block">
                 El Resplandor del Lujo Atemporal

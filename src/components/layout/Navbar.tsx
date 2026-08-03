@@ -22,7 +22,8 @@ import {
   Crown,
   ShieldCheck,
   LogOut,
-  Lock
+  Lock,
+  Globe
 } from 'lucide-react';
 import { Currency } from '../../types';
 
@@ -54,67 +55,78 @@ export const Navbar: React.FC = () => {
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-zinc-950/85 border-b border-amber-900/10 dark:border-amber-500/15 transition-colors duration-300">
-      {/* Top Banner Bar */}
-      <div className="bg-gradient-to-r from-amber-950 via-zinc-900 to-amber-950 text-amber-200/90 text-xs py-1.5 px-4 text-center tracking-widest font-light flex items-center justify-between">
-        <div className="hidden sm:flex items-center gap-2 text-amber-400/80">
-          <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          <span>Envío VIP Gratis en compras superiores a $ 500.000 COP</span>
-        </div>
-        <div className="mx-auto sm:mx-0 flex items-center gap-4">
-          <button
-            onClick={() => setIsPwaModalOpen(true)}
-            className="hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold text-amber-300 bg-amber-500/10 px-2 py-0.5 border border-amber-500/30"
-          >
-            <Smartphone className="w-3.5 h-3.5 text-amber-400" />
-            <span>Instalar en iOS / Android</span>
-          </button>
-          <button
-            onClick={() => setIsQuizOpen(true)}
-            className="hover:text-amber-300 transition-colors hidden md:flex items-center gap-1 font-medium underline underline-offset-2"
-          >
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            Quiz Aroma & Reloj
-          </button>
-          <span className="opacity-40">|</span>
-          <select
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value as Currency)}
-            className="bg-transparent text-amber-200 cursor-pointer focus:outline-none font-sans text-xs font-bold"
-          >
-            <option value="COP" className="bg-zinc-900 text-amber-200">COP ($ Peso Colombiano)</option>
-            <option value="USD" className="bg-zinc-900 text-amber-200">USD ($ Dólar)</option>
-            <option value="EUR" className="bg-zinc-900 text-amber-200">EUR (€ Euro)</option>
-            <option value="MXN" className="bg-zinc-900 text-amber-200">MXN ($ Peso Mexicano)</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Main Header Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-        {/* Brand Logo */}
-        <button
-          onClick={() => {
-            setViewMode('storefront');
-            setActiveTab('explore');
-          }}
-          className="flex items-center gap-3 group text-left focus:outline-none"
-        >
-          <img
-            src={logoImg}
-            alt="Imperio Lux Logo"
-            className="w-12 h-12 object-contain border border-amber-600/40 dark:border-amber-400/50 bg-black shadow-md group-hover:scale-105 transition-transform"
-            referrerPolicy="no-referrer"
-          />
-          <div>
-            <span className="font-serif text-xl sm:text-2xl tracking-widest text-zinc-900 dark:text-amber-100 font-bold block uppercase">
-              IMPERIO LUX
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-amber-700/90 dark:text-amber-400/80 font-sans block uppercase font-medium">
-              Perfumes & Relojes de Lujo
-            </span>
+    <>
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-zinc-950/85 border-b border-amber-900/10 dark:border-amber-500/15 transition-colors duration-300">
+        {/* Top Banner Bar */}
+        <div className="bg-gradient-to-r from-amber-950 via-zinc-900 to-amber-950 text-amber-200/90 text-xs py-1.5 px-4 text-center tracking-widest font-light flex items-center justify-between">
+          <div className="hidden sm:flex items-center gap-2 text-amber-400/80 font-semibold">
+            <Globe className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Boutique Global • Envío VIP Gratis a Nivel Mundial</span>
           </div>
-        </button>
+          <div className="mx-auto sm:mx-0 flex items-center gap-4">
+            <button
+              onClick={() => setIsPwaModalOpen(true)}
+              className="hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold text-amber-300 bg-amber-500/10 px-2 py-0.5 border border-amber-500/30"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+              <span>Instalar en iOS / Android</span>
+            </button>
+            <button
+              onClick={() => setIsQuizOpen(true)}
+              className="hover:text-amber-300 transition-colors hidden md:flex items-center gap-1 font-medium underline underline-offset-2"
+            >
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              Quiz Aroma & Reloj
+            </button>
+            <span className="opacity-40">|</span>
+            <div className="flex items-center gap-1">
+              <Globe className="w-3.5 h-3.5 text-amber-300 shrink-0" title="Seleccionar Moneda Global" />
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value as Currency)}
+                className="bg-transparent text-amber-200 cursor-pointer focus:outline-none font-sans text-xs font-bold"
+              >
+                <option value="COP" className="bg-zinc-900 text-amber-200">COP ($ Peso Colombiano)</option>
+                <option value="USD" className="bg-zinc-900 text-amber-200">USD ($ Dólar)</option>
+                <option value="EUR" className="bg-zinc-900 text-amber-200">EUR (€ Euro)</option>
+                <option value="MXN" className="bg-zinc-900 text-amber-200">MXN ($ Peso Mexicano)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Header Container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+          {/* Brand Logo & Globe Icon */}
+          <button
+            onClick={() => {
+              setViewMode('storefront');
+              setActiveTab('explore');
+            }}
+            className="flex items-center gap-3 group text-left focus:outline-none"
+          >
+            <div className="relative w-12 h-12 border-2 border-amber-500/60 bg-zinc-950 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform overflow-hidden shrink-0 rounded-none">
+              <img
+                src={logoImg}
+                alt="Imperio Lux Logo"
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center font-serif text-amber-400 font-bold text-xs bg-zinc-950/40 backdrop-blur-[1px]">
+                <Globe className="w-5 h-5 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+              </div>
+            </div>
+            <div>
+              <span className="font-serif text-xl sm:text-2xl tracking-widest text-zinc-900 dark:text-amber-100 font-bold block uppercase flex items-center gap-2">
+                IMPERIO LUX
+                <Globe className="w-4 h-4 text-amber-500 inline-block shrink-0" title="Imperio Lux Global" />
+              </span>
+              <span className="text-[10px] tracking-[0.2em] text-amber-700/90 dark:text-amber-400/80 font-sans block uppercase font-medium">
+                Haute Parfumerie & Horlogerie
+              </span>
+            </div>
+          </button>
 
         {/* Storefront Navigation Tabs */}
         {viewMode === 'storefront' && (
@@ -319,7 +331,9 @@ export const Navbar: React.FC = () => {
         </div>
       )}
 
-      {/* Modals */}
+      </header>
+
+      {/* Modals placed outside sticky header element */}
       <ContactModal
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
@@ -331,6 +345,6 @@ export const Navbar: React.FC = () => {
       <PwaInstallBanner
         onOpenModal={() => setIsPwaModalOpen(true)}
       />
-    </header>
+    </>
   );
 };

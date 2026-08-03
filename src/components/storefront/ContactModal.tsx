@@ -15,7 +15,8 @@ import {
   Calendar,
   Gem,
   Award,
-  Zap
+  Zap,
+  Globe
 } from 'lucide-react';
 
 interface ContactModalProps {
@@ -55,7 +56,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-zinc-950/85 backdrop-blur-md font-sans overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-zinc-950/85 backdrop-blur-md font-sans overflow-y-auto">
       <div className="relative w-full max-w-2xl my-auto bg-white dark:bg-zinc-900 border border-amber-500/40 p-5 sm:p-8 shadow-2xl text-zinc-900 dark:text-zinc-100 max-h-[92vh] overflow-y-auto rounded-none transition-colors duration-300">
         {/* Close Button */}
         <button
@@ -70,13 +71,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
         <div className="mb-5 border-b border-zinc-200 dark:border-zinc-800 pb-4 pr-8">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase tracking-widest border border-amber-500/30">
-              <Sparkles className="w-3.5 h-3.5" /> Escríbenos • Concierge Privado
+              <Globe className="w-3.5 h-3.5 text-amber-500" /> Escríbenos • Concierge Privado Global
             </span>
             <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-2 py-0.5 font-bold uppercase tracking-wider">
               <Zap className="w-3 h-3 animate-pulse" /> En Línea
             </span>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-amber-100">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-amber-100 flex items-center gap-2">
             Formulario de Contacto & Asesoría
           </h2>
           <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
