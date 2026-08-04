@@ -133,13 +133,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const saved = localStorage.getItem('imperio_lux_products_db');
     if (saved !== null) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
       } catch (e) {
         console.error('Error parsing stored products:', e);
       }
     }
-    // Base de datos de productos vacía por defecto
-    return [];
+    // Catálogo por defecto si no hay productos guardados localmente
+    return INITIAL_PRODUCTS;
   });
 
   useEffect(() => {
