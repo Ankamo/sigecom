@@ -120,3 +120,15 @@ export interface QuizState {
   preferredNotesOrStyle: string;
   gender: string;
 }
+
+export interface ConciergeMessage {
+  id: string;
+  timestamp: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  read: boolean;
+  status: 'Nuevo' | 'En Atención' | 'Atendido';
+}

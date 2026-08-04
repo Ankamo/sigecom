@@ -13,12 +13,14 @@ import {
   Moon,
   Crown,
   ShieldCheck,
-  UserCheck,
   LogOut,
   KeyRound,
   FileText,
   UserPlus,
-  Lock
+  Lock,
+  Volume2,
+  BellRing,
+  Inbox
 } from 'lucide-react';
 
 interface SaasLayoutProps {
@@ -36,7 +38,10 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
     setIsLoginModalOpen,
     isLoginModalOpen,
     logout,
-    switchUserRole
+    switchUserRole,
+    unreadConciergeCount,
+    conciergeMessages,
+    playAlertSound
   } = useApp();
 
   const isSuperAdmin = currentUser?.role === 'superadmin';
@@ -46,7 +51,13 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
     { id: 'inventory', label: 'Catálogo & Inventario', icon: Package },
     { id: 'crm', label: 'Clientes VIP & CRM', icon: Users },
     { id: 'orders', label: 'Pedidos & Despacho', icon: ShoppingBag },
-    { id: 'ai_concierge', label: 'Asistente IA Concierge', icon: Sparkles },
+    {
+      id: 'ai_concierge',
+      label: 'Concierge & Mensajes VIP',
+      icon: Inbox,
+      badge: unreadConciergeCount > 0 ? `🔔 ${unreadConciergeCount} Nuevos` : undefined,
+      badgeColor: unreadConciergeCount > 0 ? 'bg-rose-500 text-white font-bold animate-pulse border-rose-400' : undefined
+    },
     { id: 'users_management', label: 'Usuarios & Roles', icon: UserPlus, badge: isSuperAdmin ? 'SuperAdmin' : 'Restringido' },
     { id: 'audit_logs', label: 'Auditoría & Seguridad', icon: FileText }
   ];
@@ -215,7 +226,13 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                    <span
+                      className={`text-[9px] px-1.5 py-0.2 border ${
+                        item.badgeColor
+                          ? item.badgeColor
+                          : 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/30'
+                      }`}
+                    >
                       {item.badge}
                     </span>
                   )}
@@ -258,6 +275,38 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
 
       {/* Main SaaS View Area */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {/* 🔔 LIVE CONCIERGE NOTIFICATION ALERT BANNER */}
+        {unreadConciergeCount > 0 && (
+          <div className="mb-4 p-3 bg-rose-500/15 border-2 border-rose-500 text-rose-900 dark:text-rose-100 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
+            <div className="flex items-center gap-2.5">
+              <BellRing className="w-5 h-5 text-rose-500 shrink-0 animate-bounce" />
+              <div>
+                <strong className="text-xs font-bold uppercase tracking-wider block text-rose-600 dark:text-rose-300">
+                  ¡ALERTA DE MENSAJE RECIBIDO! ({unreadConciergeCount} Mensaje{unreadConciergeCount > 1 ? 's' : ''} Nuevo{unreadConciergeCount > 1 ? 's' : ''})
+                </strong>
+                <span className="text-[11px] text-zinc-700 dark:text-zinc-300">
+                  Notificando a Admin y Super Admin en el portal de acceso. Sonido de alerta configurado.
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={playAlertSound}
+                className="px-2.5 py-1.5 bg-zinc-900 text-amber-300 font-bold text-[10px] uppercase border border-amber-500/50 flex items-center gap-1 hover:bg-zinc-800 shadow-sm"
+                title="Probar Tono de Alerta"
+              >
+                <Volume2 className="w-3.5 h-3.5 text-amber-400" /> Probar Alerta Sonora
+              </button>
+              <button
+                onClick={() => setActiveTab('ai_concierge')}
+                className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1 shadow-md transition-all"
+              >
+                <Inbox className="w-3.5 h-3.5" /> Ver Bandeja de Mensajes
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Top bar with quick user status and PROMINENT CERRAR SESION button */}
         <div className="mb-6 p-3 bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
@@ -268,6 +317,13 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={playAlertSound}
+              className="px-2.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-800 dark:text-amber-300 border border-amber-500/40 font-bold text-[10px] uppercase tracking-wider transition-colors flex items-center gap-1"
+              title="Prueba de sonido de alerta"
+            >
+              <Volume2 className="w-3.5 h-3.5 text-amber-500" /> 🔊 Probar Alerta Sonora
+            </button>
             <button
               onClick={() => setIsLoginModalOpen(true)}
               className="px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-bold text-[10px] uppercase tracking-wider transition-colors"
