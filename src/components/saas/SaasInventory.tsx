@@ -30,6 +30,7 @@ export const SaasInventory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'perfume' | 'watch'>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const filteredProducts = products.filter((p) => {
@@ -74,23 +75,19 @@ export const SaasInventory: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {products.length > 0 ? (
             <button
-              onClick={() => {
-                if (window.confirm('¿Está seguro de que desea vaciar la base de datos de productos?')) {
-                  clearProductsDatabase();
-                }
-              }}
-              className="px-3 py-2.5 bg-rose-600/10 hover:bg-rose-600 text-rose-700 dark:text-rose-400 hover:text-white border border-rose-500/30 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
-              title="Vaciar todos los productos de la base de datos"
+              onClick={() => setIsDeleteConfirmOpen(true)}
+              className="px-3.5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-md animate-pulse"
+              title="Eliminar permanentemente todos los productos del catálogo y la web"
             >
-              <Trash2 className="w-3.5 h-3.5" /> Vaciar BD
+              <Trash2 className="w-4 h-4" /> Eliminar Todo el Catálogo
             </button>
           ) : (
             <button
               onClick={() => seedDefaultProducts()}
-              className="px-3 py-2.5 bg-amber-500/10 hover:bg-amber-600 text-amber-700 dark:text-amber-300 hover:text-white border border-amber-500/40 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
-              title="Cargar productos de demostración"
+              className="px-3.5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
+              title="Cargar catálogo de demostración inicial"
             >
-              <RefreshCw className="w-3.5 h-3.5" /> Cargar Demo
+              <RefreshCw className="w-4 h-4" /> Restablecer Catálogo Demo
             </button>
           )}
 
@@ -292,6 +289,47 @@ export const SaasInventory: React.FC = () => {
             setEditingProduct(null);
           }}
         />
+      )}
+
+      {/* MODAL DE CONFIRMACIÓN DE ELIMINACIÓN TOTAL DEL CATÁLOGO */}
+      {isDeleteConfirmOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-zinc-900 border-2 border-rose-600 max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+              <AlertTriangle className="w-8 h-8 shrink-0 animate-bounce" />
+              <div>
+                <h3 className="font-serif font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                  ¿Confirmar Eliminación Total?
+                </h3>
+                <span className="text-xs font-bold uppercase text-rose-600 tracking-wider">
+                  Acción irreversible para el sitio web y la base de datos
+                </span>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed bg-rose-50 dark:bg-rose-950/40 p-3 border border-rose-200 dark:border-rose-900">
+              Al confirmar esta acción, <strong>TODOS los {products.length} productos</strong> serán eliminados permanentemente del sistema. La tienda web pública quedará completamente vacía en todos los navegadores.
+            </p>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                onClick={() => setIsDeleteConfirmOpen(false)}
+                className="px-4 py-2 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold uppercase tracking-wider"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  clearProductsDatabase();
+                  setIsDeleteConfirmOpen(false);
+                }}
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md"
+              >
+                <Trash2 className="w-4 h-4" /> Sí, Eliminar Todo
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -134,14 +134,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (saved !== null) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed;
         }
       } catch (e) {
         console.error('Error parsing stored products:', e);
       }
     }
-    // Catálogo por defecto si no hay productos guardados localmente
+    // Catálogo por defecto solo si NUNCA se ha guardado una preferencia en este navegador
     return INITIAL_PRODUCTS;
   });
 
