@@ -24,11 +24,11 @@ export const HeroBanner: React.FC = () => {
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 border border-amber-500/40 bg-amber-500/10 backdrop-blur-md text-amber-300 text-xs font-semibold uppercase tracking-widest">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            Imperio Luz — Haute Parfumerie & Horlogerie
+            Imperio Lux — Haute Parfumerie & Horlogerie
           </div>
 
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-amber-50 leading-[1.15]">
-            Imperio Luz, <br />
+            Imperio Lux, <br />
             <span className="font-serif italic font-light text-amber-400 drop-shadow-sm">
               El Resplandor del Lujo Atemporal
             </span>

@@ -68,6 +68,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             alt="Imperio Lux"
             className="w-14 h-14 object-contain bg-black border border-amber-500/40 p-0.5 shadow-md shrink-0"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.dataset.triedPublic) {
+                target.dataset.triedPublic = 'true';
+                target.src = '/logo.jpg';
+              } else if (target.src !== window.location.origin + '/icon.svg') {
+                target.src = '/icon.svg';
+              }
+            }}
           />
           <div>
             <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase tracking-widest border border-amber-500/30">

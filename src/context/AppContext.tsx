@@ -171,7 +171,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (!matchedAccount) {
       addAuditLog('Intento de Login Fallido', `Usuario no encontrado: ${usernameInput}`, 'warning');
-      return { success: false, error: 'Usuario no registrado en Imperio Luz.' };
+      return { success: false, error: 'Usuario no registrado en Imperio Lux.' };
     }
 
     if (matchedAccount.password !== passwordInput) {

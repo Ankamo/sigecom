@@ -65,6 +65,15 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
               alt="Imperio Lux"
               className="w-20 h-20 object-contain bg-black border border-amber-500/40 p-1 shadow-lg"
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.dataset.triedPublic) {
+                  target.dataset.triedPublic = 'true';
+                  target.src = '/logo.jpg';
+                } else if (target.src !== window.location.origin + '/icon.svg') {
+                  target.src = '/icon.svg';
+                }
+              }}
             />
           </div>
 
@@ -121,6 +130,15 @@ export const SaasLayout: React.FC<SaasLayoutProps> = ({ children }) => {
                 alt="Imperio Lux"
                 className="w-9 h-9 object-contain bg-black border border-amber-500/40 p-0.5 shadow-sm"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.dataset.triedPublic) {
+                    target.dataset.triedPublic = 'true';
+                    target.src = '/logo.jpg';
+                  } else if (target.src !== window.location.origin + '/icon.svg') {
+                    target.src = '/icon.svg';
+                  }
+                }}
               />
               <div>
                 <span className="font-serif text-sm font-bold tracking-wider block text-zinc-900 dark:text-amber-100 uppercase">

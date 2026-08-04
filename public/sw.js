@@ -1,5 +1,5 @@
-// Service Worker for Imperio Luz PWA
-const CACHE_NAME = 'imperio-luz-v1';
+// Service Worker for Imperio Lux PWA
+const CACHE_NAME = 'imperio-lux-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

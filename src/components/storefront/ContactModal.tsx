@@ -38,7 +38,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
   if (!isOpen) return null;
 
-  const waCustomMessage = `Hola Imperio Luz, solicito asesoría sobre: ${subject}.${message ? ` Nota: ${message}` : ''}`;
+  const waCustomMessage = `Hola Imperio Lux, solicito asesoría sobre: ${subject}.${message ? ` Nota: ${message}` : ''}`;
   const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waCustomMessage)}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(waLink)}&color=059669&bg=ffffff`;
 
@@ -184,7 +184,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               <div className="flex justify-center">
                 <img
                   src={qrCodeUrl}
-                  alt="QR WhatsApp Imperio Luz"
+                  alt="QR WhatsApp Imperio Lux"
                   className="w-32 h-32 border-2 border-emerald-500 p-1 bg-white shadow-md"
                 />
               </div>
@@ -207,7 +207,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   ¡Mensaje Enviado con Éxito!
                 </h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                  Un embajador de Imperio Luz se comunicará contigo al correo o teléfono proporcionado en menos de 2 horas.
+                  Un embajador de Imperio Lux se comunicará contigo al correo o teléfono proporcionado en menos de 2 horas.
                 </p>
               </div>
             ) : (

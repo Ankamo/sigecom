@@ -17,7 +17,7 @@ export const WhatsAppButton: React.FC = () => {
   const { whatsappNumber, setWhatsappNumber, currentUser } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'chat' | 'qr' | 'settings'>('chat');
-  const [message, setMessage] = useState('Hola Atelier Imperio Luz, me gustaría solicitar una consulta privada de perfumes y alta relojería.');
+  const [message, setMessage] = useState('Hola Atelier Imperio Lux, me gustaría solicitar una consulta privada de perfumes y alta relojería.');
   const [editingNumber, setEditingNumber] = useState(whatsappNumber);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
@@ -124,7 +124,7 @@ export const WhatsAppButton: React.FC = () => {
                   <button
                     key={chip}
                     type="button"
-                    onClick={() => setMessage(`Hola Imperio Luz, deseo ${chip.replace(/^[^\s]+\s/, '').toLowerCase()}.`)}
+                    onClick={() => setMessage(`Hola Imperio Lux, deseo ${chip.replace(/^[^\s]+\s/, '').toLowerCase()}.`)}
                     className="text-[10px] px-2 py-1 bg-zinc-100 hover:bg-emerald-100 dark:bg-zinc-800 dark:hover:bg-emerald-950/60 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
                   >
                     {chip}

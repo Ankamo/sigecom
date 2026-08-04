@@ -26,7 +26,7 @@ export const BrandStory: React.FC = () => {
               Donde el Arte de la Fragancia Encuentra la Geometría Sagrada del Tiempo
             </h2>
             <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-light">
-              Fundada bajo el principio de la inmortalidad sensorial y la luminosidad atemporal, <strong>Imperio Luz</strong> une dos tradiciones legendarias: los laboratorios de perfumería de nicho en Grasse, Francia, y la manufactura de alta relojería en Le Locle, Suiza.
+              Fundada bajo el principio de la inmortalidad sensorial y la luminosidad atemporal, <strong>Imperio Lux</strong> une dos tradiciones legendarias: los laboratorios de perfumería de nicho en Grasse, Francia, y la manufactura de alta relojería en Le Locle, Suiza.
             </p>
             <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-light">
               Nuestros perfumistas seleccionan únicamente el 1% superior de materias primas naturales: Oud camboyano añejado durante décadas en barricas, iris noble macerado durante tres años y rosas de Taif cosechadas manualmente al romper el alba.
@@ -36,7 +36,7 @@ export const BrandStory: React.FC = () => {
           <div className="relative aspect-[4/3] bg-zinc-200 dark:bg-zinc-900 overflow-hidden border border-amber-500/30 shadow-2xl group">
             <img
               src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80"
-              alt="Atelier Imperio Luz"
+              alt="Atelier Imperio Lux"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
               referrerPolicy="no-referrer"
             />

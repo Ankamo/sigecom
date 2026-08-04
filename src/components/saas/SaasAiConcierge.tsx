@@ -14,7 +14,7 @@ export const SaasAiConcierge: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'ai',
-      text: 'Bienvenido al Concierge IA de Imperio Luz. Estoy entrenado en notas olfativas de nicho, complicaciones horológicas de Ginebra y asesoría para clientes de alta sociedad. ¿En qué le asisto hoy?',
+      text: 'Bienvenido al Concierge IA de Imperio Lux. Estoy entrenado en notas olfativas de nicho, complicaciones horológicas de Ginebra y asesoría para clientes de alta sociedad. ¿En qué le asisto hoy?',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);

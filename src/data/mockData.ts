@@ -5,7 +5,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'perfume-01',
     name: 'Oud Impérial Extrait de Parfum',
-    brand: 'Imperio Luz Parfumerie',
+    brand: 'Imperio Lux Parfumerie',
     category: 'perfume',
     priceUSD: 380,
     rating: 4.9,
@@ -36,7 +36,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'perfume-02',
     name: 'Velvet Iris & Smoked Bourbon',
-    brand: 'Imperio Luz Parfumerie',
+    brand: 'Imperio Lux Parfumerie',
     category: 'perfume',
     priceUSD: 295,
     rating: 4.8,
@@ -63,7 +63,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'perfume-03',
     name: 'Santal Céleste & White Amber',
-    brand: 'Imperio Luz Parfumerie',
+    brand: 'Imperio Lux Parfumerie',
     category: 'perfume',
     priceUSD: 310,
     rating: 4.9,
@@ -90,7 +90,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'perfume-04',
     name: 'Fleur Royale de Grasse',
-    brand: 'Maison Imperio Luz',
+    brand: 'Maison Imperio Lux',
     category: 'perfume',
     priceUSD: 340,
     rating: 4.7,
@@ -117,7 +117,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'perfume-05',
     name: 'Citrus Zest & Midnight Vetiver',
-    brand: 'Maison Imperio Luz',
+    brand: 'Maison Imperio Lux',
     category: 'perfume',
     priceUSD: 260,
     rating: 4.8,

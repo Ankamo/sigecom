@@ -70,7 +70,7 @@ export const ProductGrid: React.FC = () => {
               ? 'Perfumes de Nicho & Extractos'
               : selectedCategory === 'watch'
               ? 'Piezas de Alta Relojería Suizo'
-              : 'Colección Imperio Luz'}
+              : 'Colección Imperio Lux'}
           </h2>
         </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { Sparkles, MapPin, Mail, Phone, ShieldCheck, Clock, Award, Globe } from 'lucide-react';
+import logoImg from '../../assets/logo.jpg';
 
 export const Footer: React.FC = () => {
   const { setViewMode, setActiveTab } = useApp();
@@ -58,14 +59,27 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand Info */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 border border-amber-500/50 bg-zinc-950 flex items-center justify-center font-serif text-amber-400 font-bold text-lg relative">
-              <Globe className="w-5 h-5 text-amber-400" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 border border-amber-500/50 bg-zinc-950 flex items-center justify-center relative overflow-hidden shrink-0 shadow-md">
+              <img
+                src={logoImg}
+                alt="Imperio Lux"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.dataset.triedPublic) {
+                    target.dataset.triedPublic = 'true';
+                    target.src = '/logo.jpg';
+                  } else if (target.src !== window.location.origin + '/icon.svg') {
+                    target.src = '/icon.svg';
+                  }
+                }}
+              />
             </div>
             <div>
               <span className="font-serif text-xl tracking-widest text-zinc-900 dark:text-amber-100 uppercase font-semibold flex items-center gap-1.5">
-                IMPERIO LUZ
-                <Globe className="w-4 h-4 text-amber-500" title="Imperio Luz Global" />
+                IMPERIO LUX
+                <Globe className="w-4 h-4 text-amber-500" title="Imperio Lux Global" />
               </span>
               <span className="text-[9px] text-amber-700 dark:text-amber-400/80 font-sans tracking-widest uppercase block">
                 El Resplandor del Lujo Atemporal
@@ -73,7 +87,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
           <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Imperio Luz: La convergencia definitiva entre los elixires olfativos de Grasse y la maestría micro-mecánica de la alta relojería de Ginebra.
+            Imperio Lux: La convergencia definitiva entre los elixires olfativos de Grasse y la maestría micro-mecánica de la alta relojería de Ginebra.
           </p>
           <div className="pt-2">
             <span className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400/80 block font-semibold mb-2">
@@ -137,7 +151,7 @@ export const Footer: React.FC = () => {
           <p className="text-xs text-zinc-400 mb-3 leading-relaxed">
             Reciba invitaciones exclusivas a catas olfativas y lanzamientos limitados de alta relojería.
           </p>
-          <form onSubmit={(e) => { e.preventDefault(); alert('Gracias por unirse al Círculo de Privilegios Imperio Luz.'); }} className="space-y-2">
+          <form onSubmit={(e) => { e.preventDefault(); alert('Gracias por unirse al Círculo de Privilegios Imperio Lux.'); }} className="space-y-2">
             <input
               type="email"
               placeholder="Su correo corporativo o personal"
@@ -155,7 +169,7 @@ export const Footer: React.FC = () => {
       </div>
 
       <div className="border-t border-zinc-900 py-6 px-4 text-center text-[11px] text-zinc-500">
-        <p>© 2026 Imperio Luz — Haute Parfumerie & Horlogerie S.A. Todos los derechos reservados.</p>
+        <p>© 2026 Imperio Lux — Haute Parfumerie & Horlogerie S.A. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
