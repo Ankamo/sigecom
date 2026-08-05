@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "products": {
+      "title": "Products",
+      "description": "Catalog of perfumes and luxury watches",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "brand": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "stockQuantity": { "type": "number" },
+        "inStock": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "gender": { "type": "string" },
+        "scentFamily": { "type": "string" },
+        "notes": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "isNew": { "type": "boolean" }
+      },
+      "required": ["id", "name", "price", "stockQuantity"]
+    },
+    "orders": {
+      "title": "Orders",
+      "description": "Sales orders placed by customers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderNumber": { "type": "string" },
+        "date": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "customer": { "type": "object" },
+        "items": { "type": "array" },
+        "paymentMethod": { "type": "string" },
+        "shippingMethod": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "total", "status"]
+    },
+    "conciergeMessages": {
+      "title": "Concierge Messages",
+      "description": "Inquiries sent to luxury AI concierge",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "message"]
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Global store settings",
+      "type": "object",
+      "properties": {
+        "whatsappNumber": { "type": "string" }
+      }
+    },
+    "users": {
+      "title": "System Users",
+      "description": "Admin and SuperAdmin system users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "avatar": { "type": "string" },
+        "lastLogin": { "type": "string" },
+        "permissions": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "username", "name", "email", "role"]
+    },
+    "customers": {
+      "title": "VIP Customers",
+      "description": "VIP client database records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "tier": { "type": "string" },
+        "totalSpentUSD": { "type": "number" },
+        "preferredCategory": { "type": "string" },
+        "favoriteNotesOrStyle": { "type": "array", "items": { "type": "string" } },
+        "lastPurchaseDate": { "type": "string" },
+        "conciergeNotes": { "type": "string" },
+        "avatar": { "type": "string" }
+      },
+      "required": ["id", "name", "email"]
+    }
+  }
+}

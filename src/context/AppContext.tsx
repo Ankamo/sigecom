@@ -120,55 +120,18 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
-    const saved = localStorage.getItem('imperio_lux_theme_mode');
-    if (saved === 'day' || saved === 'night') return saved;
-    return 'night'; // Default luxury dark/night mode
-  });
+  const [themeMode, setThemeMode] = useState<ThemeMode>('night');
   const [viewMode, setViewMode] = useState<ViewMode>('storefront');
   const [activeTab, setActiveTab] = useState<string>('explore');
   const [currency, setCurrency] = useState<Currency>('COP');
 
-  const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('imperio_lux_products_db');
-    if (saved !== null) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return parsed;
-        }
-      } catch (e) {
-        console.error('Error parsing stored products:', e);
-      }
-    }
-    // Catálogo por defecto solo si NUNCA se ha guardado una preferencia en este navegador
-    return INITIAL_PRODUCTS;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('imperio_lux_products_db', JSON.stringify(products));
-  }, [products]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [wishlist, setWishlist] = useState<string[]>(['perfume-01', 'watch-01']);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const [orders, setOrders] = useState<Order[]>(() => {
-    const saved = localStorage.getItem('imperio_lux_orders_db');
-    if (saved !== null) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Error parsing stored orders:', e);
-      }
-    }
-    // Base de datos de pedidos inicia vacía por defecto (0 ventas / $0)
-    return [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('imperio_lux_orders_db', JSON.stringify(orders));
-  }, [orders]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<CustomerVIP[]>(INITIAL_CUSTOMERS);
 
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -185,44 +148,45 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   ]);
 
   // WhatsApp Config State
-  const [whatsappNumber, setWhatsappNumberState] = useState<string>(() => {
-    return localStorage.getItem('imperio_luz_whatsapp_num') || '573118444853';
-  });
+  const [whatsappNumber, setWhatsappNumberState] = useState<string>('573118444853');
+
+  // Concierge Messages State
+  const [conciergeMessages, setConciergeMessages] = useState<ConciergeMessage[]>([]);
+
+  // ----------------------------------------------------
+  // INITIAL SYNC FROM SERVER DATABASE (NO LOCAL STORAGE)
+  // ----------------------------------------------------
+  useEffect(() => {
+    const fetchServerData = async () => {
+      try {
+        const res = await fetch('/api/db/sync');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.products)) setProducts(data.products);
+          if (Array.isArray(data.orders)) setOrders(data.orders);
+          if (Array.isArray(data.conciergeMessages)) setConciergeMessages(data.conciergeMessages);
+          if (Array.isArray(data.customers)) setCustomers(data.customers);
+          if (data.settings && data.settings.whatsappNumber) {
+            setWhatsappNumberState(data.settings.whatsappNumber);
+          }
+        }
+      } catch (error) {
+        console.error('Error sincronizando con la base de datos del servidor:', error);
+      }
+    };
+
+    fetchServerData();
+  }, []);
 
   const setWhatsappNumber = (num: string) => {
     const cleanNum = num.replace(/\D/g, '');
     setWhatsappNumberState(cleanNum);
-    localStorage.setItem('imperio_luz_whatsapp_num', cleanNum);
+    fetch('/api/db/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ whatsappNumber: cleanNum })
+    }).catch((e) => console.error('Error guardando configuración de WhatsApp:', e));
   };
-
-  // Concierge Messages State
-  const [conciergeMessages, setConciergeMessages] = useState<ConciergeMessage[]>(() => {
-    const saved = localStorage.getItem('imperio_lux_concierge_messages');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Error parsing stored concierge messages:', e);
-      }
-    }
-    return [
-      {
-        id: 'MSG-001',
-        timestamp: new Date().toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' }),
-        name: 'Carlos Mendoza',
-        email: 'carlos.mendoza@mendozalaw.co',
-        phone: '+57 300 987 6543',
-        subject: 'Asesoría de Perfumes de Nicho',
-        message: 'Solicito asesoría exclusiva para un extracto de perfume de Oud de edición limitada y grabado VIP.',
-        read: false,
-        status: 'Nuevo'
-      }
-    ];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('imperio_lux_concierge_messages', JSON.stringify(conciergeMessages));
-  }, [conciergeMessages]);
 
   const unreadConciergeCount = conciergeMessages.filter((m) => !m.read).length;
 
@@ -241,6 +205,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setConciergeMessages((prev) => [newMsg, ...prev]);
 
+    fetch('/api/db/concierge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newMsg)
+    }).catch((e) => console.error('Error en servidor al guardar mensaje de concierge:', e));
+
     // 🔊 PLAY IMMEDIATE ALARM / ALERT SOUND
     playAlertSound();
 
@@ -250,50 +220,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       `Cliente ${data.name} (${data.email}) envió solicitud: "${data.subject}" - Mensaje: ${data.message.slice(0, 60)}...`,
       'critical'
     );
-
-    // 🖥️ BROWSER NOTIFICATION (In case tab is running in background)
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      if (Notification.permission === 'granted') {
-        try {
-          new Notification('🔔 ¡NUEVO MENSAJE AL CONCIERGE!', {
-            body: `${data.name}: ${data.subject} - "${data.message.slice(0, 70)}"`,
-            icon: '/icon.svg'
-          });
-        } catch (e) {
-          console.warn('Browser notification error:', e);
-        }
-      } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission().then((perm) => {
-          if (perm === 'granted') {
-            try {
-              new Notification('🔔 ¡NUEVO MENSAJE AL CONCIERGE!', {
-                body: `${data.name}: ${data.subject}`,
-                icon: '/icon.svg'
-              });
-            } catch (e) {
-              console.warn(e);
-            }
-          }
-        });
-      }
-    }
   };
 
   const markConciergeMessageAsRead = (id: string) => {
     setConciergeMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, read: true } : m))
     );
+    fetch(`/api/db/concierge/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ read: true })
+    }).catch((e) => console.error(e));
   };
 
   const updateConciergeMessageStatus = (id: string, status: ConciergeMessage['status']) => {
     setConciergeMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, status, read: true } : m))
     );
+    fetch(`/api/db/concierge/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status, read: true })
+    }).catch((e) => console.error(e));
   };
 
   const clearConciergeMessages = () => {
     setConciergeMessages([]);
-    localStorage.removeItem('imperio_lux_concierge_messages');
+    fetch('/api/db/concierge/clear', { method: 'POST' }).catch((e) => console.error(e));
   };
 
   const addAuditLog = (action: string, details: string, severity: AuditLog['severity'] = 'info') => {
@@ -358,7 +311,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Toggle theme body & html class
   useEffect(() => {
-    localStorage.setItem('imperio_lux_theme_mode', themeMode);
     if (themeMode === 'night') {
       document.documentElement.classList.add('dark');
       document.body.classList.add('bg-zinc-950', 'text-zinc-100');
@@ -376,14 +328,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addProduct = (product: Product) => {
     setProducts((prev) => [product, ...prev]);
+    fetch('/api/db/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product)
+    }).catch((e) => console.error(e));
   };
 
   const updateProduct = (updated: Product) => {
     setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    fetch(`/api/db/products/${updated.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    }).catch((e) => console.error(e));
   };
 
   const deleteProduct = (id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    fetch(`/api/db/products/${id}`, {
+      method: 'DELETE'
+    }).catch((e) => console.error(e));
   };
 
   const updateStock = (id: string, newStock: number) => {
@@ -392,17 +357,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         p.id === id ? { ...p, stockQuantity: newStock, inStock: newStock > 0 } : p
       )
     );
+    fetch('/api/db/products/stock', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, newStock })
+    }).catch((e) => console.error(e));
   };
 
   const clearProductsDatabase = () => {
     setProducts([]);
-    localStorage.setItem('imperio_lux_products_db', JSON.stringify([]));
+    fetch('/api/db/products/clear', { method: 'POST' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.products) setProducts(data.products);
+      })
+      .catch((e) => console.error(e));
     addAuditLog('Vaciado de Base de Datos', 'Base de datos de productos vaciada por el usuario', 'warning');
   };
 
   const seedDefaultProducts = () => {
-    setProducts(INITIAL_PRODUCTS);
-    localStorage.setItem('imperio_lux_products_db', JSON.stringify(INITIAL_PRODUCTS));
+    fetch('/api/db/products/seed', { method: 'POST' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.products) setProducts(data.products);
+      })
+      .catch((e) => console.error(e));
     addAuditLog('Semilla de Base de Datos', 'Cargados productos iniciales de demostración', 'info');
   };
 
@@ -473,23 +452,44 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         })
       );
     });
+
+    fetch('/api/db/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.orders) setOrders(data.orders);
+        if (data.products) setProducts(data.products);
+      })
+      .catch((e) => console.error(e));
   };
 
   const updateOrderStatus = (orderId: string, status: Order['status']) => {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status } : o))
     );
+    fetch(`/api/db/orders/${orderId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    }).catch((e) => console.error(e));
   };
 
   const clearOrdersDatabase = () => {
     setOrders([]);
-    localStorage.setItem('imperio_lux_orders_db', JSON.stringify([]));
+    fetch('/api/db/orders/clear', { method: 'POST' }).catch((e) => console.error(e));
     addAuditLog('Vaciado de Ventas', 'Base de datos de ventas y pedidos reiniciada a $0', 'warning');
   };
 
   const seedDefaultOrders = () => {
-    setOrders(INITIAL_ORDERS);
-    localStorage.setItem('imperio_lux_orders_db', JSON.stringify(INITIAL_ORDERS));
+    fetch('/api/db/orders/seed', { method: 'POST' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.orders) setOrders(data.orders);
+      })
+      .catch((e) => console.error(e));
     addAuditLog('Semilla de Ventas', 'Cargados pedidos iniciales de demostración', 'info');
   };
 

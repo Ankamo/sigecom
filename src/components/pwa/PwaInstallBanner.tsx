@@ -20,17 +20,10 @@ export const PwaInstallBanner: React.FC<PwaInstallBannerProps> = ({ onOpenModal 
     // Check OS
     const ua = navigator.userAgent;
     setIsIos(/iPhone|iPad|iPod/i.test(ua));
-
-    // Check local storage for banner dismissal
-    const bannerDismissed = localStorage.getItem('aura_pwa_banner_dismissed');
-    if (bannerDismissed === 'true') {
-      setDismissed(true);
-    }
   }, []);
 
   const handleDismiss = () => {
     setDismissed(true);
-    localStorage.setItem('aura_pwa_banner_dismissed', 'true');
   };
 
   if (isStandalone || dismissed) return null;
