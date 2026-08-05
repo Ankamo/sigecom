@@ -26,11 +26,13 @@ export const ProductGrid: React.FC = () => {
   React.useEffect(() => {
     if (activeTab === 'perfumes') setSelectedCategory('perfume');
     else if (activeTab === 'watches') setSelectedCategory('watch');
-    else if (activeTab === 'explore') setSelectedCategory('all');
+    else setSelectedCategory('all');
   }, [activeTab]);
 
   const filteredProducts = useMemo(() => {
+    if (!Array.isArray(products)) return [];
     return products.filter((p) => {
+      if (!p) return false;
       // Category match
       if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
 
@@ -44,12 +46,12 @@ export const ProductGrid: React.FC = () => {
       }
 
       // Search match
-      if (searchTerm.trim() !== '') {
+      if (searchTerm && searchTerm.trim() !== '') {
         const query = searchTerm.toLowerCase();
-        const nameMatch = p.name.toLowerCase().includes(query);
-        const descMatch = p.description.toLowerCase().includes(query);
-        const brandMatch = p.brand.toLowerCase().includes(query);
-        const tagsMatch = p.tags.some((t) => t.toLowerCase().includes(query));
+        const nameMatch = p.name ? p.name.toLowerCase().includes(query) : false;
+        const descMatch = p.description ? p.description.toLowerCase().includes(query) : false;
+        const brandMatch = p.brand ? p.brand.toLowerCase().includes(query) : false;
+        const tagsMatch = Array.isArray(p.tags) ? p.tags.some((t) => typeof t === 'string' && t.toLowerCase().includes(query)) : false;
         return nameMatch || descMatch || brandMatch || tagsMatch;
       }
 

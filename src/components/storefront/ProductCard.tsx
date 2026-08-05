@@ -90,7 +90,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
             {product.category === 'perfume' && product.fragranceNotes && (
               <p className="line-clamp-1 font-light italic">
-                <span className="font-semibold not-italic text-zinc-700 dark:text-zinc-300">Familia:</span> {product.fragranceNotes.family} ({product.fragranceNotes.top.slice(0, 2).join(', ')})
+                <span className="font-semibold not-italic text-zinc-700 dark:text-zinc-300">Familia:</span> {product.fragranceNotes.family || 'Fragancia Novedosa'} {Array.isArray(product.fragranceNotes.top) ? `(${product.fragranceNotes.top.slice(0, 2).join(', ')})` : ''}
               </p>
             )}
             {product.category === 'watch' && product.watchSpecs && (

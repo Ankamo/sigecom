@@ -125,15 +125,15 @@ export const ProductDetailModal: React.FC = () => {
                   <div className="grid grid-cols-3 gap-2 text-[11px] text-zinc-700 dark:text-zinc-300 font-sans">
                     <div>
                       <span className="font-bold text-amber-700 dark:text-amber-400 block uppercase text-[10px]">Notas de Salida</span>
-                      <p>{selectedProduct.fragranceNotes.top.join(', ')}</p>
+                      <p>{Array.isArray(selectedProduct.fragranceNotes.top) ? selectedProduct.fragranceNotes.top.join(', ') : 'N/A'}</p>
                     </div>
                     <div>
                       <span className="font-bold text-amber-700 dark:text-amber-400 block uppercase text-[10px]">Notas de Corazón</span>
-                      <p>{selectedProduct.fragranceNotes.heart.join(', ')}</p>
+                      <p>{Array.isArray(selectedProduct.fragranceNotes.heart) ? selectedProduct.fragranceNotes.heart.join(', ') : 'N/A'}</p>
                     </div>
                     <div>
                       <span className="font-bold text-amber-700 dark:text-amber-400 block uppercase text-[10px]">Notas de Fondo</span>
-                      <p>{selectedProduct.fragranceNotes.base.join(', ')}</p>
+                      <p>{Array.isArray(selectedProduct.fragranceNotes.base) ? selectedProduct.fragranceNotes.base.join(', ') : 'N/A'}</p>
                     </div>
                   </div>
                   <div className="pt-2 border-t border-amber-500/10 flex items-center justify-between text-[11px] text-zinc-600 dark:text-zinc-400">

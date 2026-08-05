@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import fs from 'fs';
 import path from 'path';
-import { Product, Order, ConciergeMessage, CustomerVIP, User } from '../types';
+import { Product, Order, ConciergeMessage, CustomerVIP, User, ProductCategory } from '../types';
 import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_CUSTOMERS, MOCK_USERS } from '../data/mockData';
 
 const configPath = path.join(process.cwd(), 'firebase-applet-config.json');
@@ -51,12 +51,58 @@ export async function getProductsFromFirebase(): Promise<Product[]> {
     if (querySnapshot.empty) {
       // Seed default products if database collection is completely new/uninitialized
       console.log('🌱 Firestore products collection empty. Seeding initial products...');
-      await seedProductsInFirebase();
-      return INITIAL_PRODUCTS;
+      return await seedProductsInFirebase();
     }
     const products: Product[] = [];
     querySnapshot.forEach((docSnap) => {
-      products.push(docSnap.data() as Product);
+      const data = docSnap.data();
+      const rawPrice = data.priceUSD !== undefined ? data.priceUSD : data.price;
+      const parsedPrice = typeof rawPrice === 'number' ? rawPrice : parseFloat(rawPrice || '0') || 0;
+      
+      const category: ProductCategory = (data.category === 'watch' || data.category === 'reloj') ? 'watch' : 'perfume';
+      const image = data.image || (category === 'perfume' 
+        ? 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80'
+        : 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=80');
+
+      const normalizedProduct: Product = {
+        id: data.id || docSnap.id,
+        name: data.name || 'Producto Exclusivo',
+        brand: data.brand || 'Imperio Lux',
+        category,
+        priceUSD: parsedPrice,
+        costPrice: typeof data.costPrice === 'number' ? data.costPrice : Math.round(parsedPrice * 0.4),
+        profitMarginPercent: typeof data.profitMarginPercent === 'number' ? data.profitMarginPercent : 60,
+        rating: typeof data.rating === 'number' ? data.rating : 5.0,
+        reviewsCount: typeof data.reviewsCount === 'number' ? data.reviewsCount : 1,
+        image,
+        gallery: Array.isArray(data.gallery) && data.gallery.length > 0 ? data.gallery : [image],
+        tags: Array.isArray(data.tags) ? data.tags : [],
+        inStock: data.inStock !== false && (data.stockQuantity === undefined || data.stockQuantity > 0),
+        stockQuantity: typeof data.stockQuantity === 'number' ? data.stockQuantity : 10,
+        sku: data.sku || `IMP-${category.toUpperCase()}-${(docSnap.id || '001').substring(0, 6)}`,
+        luxuryTier: data.luxuryTier || 'Colección Privada',
+        description: data.description || 'Pieza exclusiva de alta gama del catálogo Imperio Lux.',
+        gender: data.gender || 'Unisex',
+        featured: Boolean(data.featured),
+        volumeOrSizes: Array.isArray(data.volumeOrSizes) ? data.volumeOrSizes : (category === 'perfume' ? ['50ml Extrait', '100ml Extrait'] : undefined),
+        fragranceNotes: data.fragranceNotes || (category === 'perfume' ? {
+          top: ['Notas de Salida Seleccionadas'],
+          heart: ['Esencias Florales y Ambarinas'],
+          base: ['Maderas Nobles y Oud'],
+          longevity: 'Larga Duración (8-12h)',
+          sillage: 'Moderado',
+          family: (data.scentFamily as any) || 'Oud & Maderas'
+        } : undefined),
+        watchSpecs: data.watchSpecs || (category === 'watch' ? {
+          movement: 'Automático Suizo',
+          caseMaterial: 'Acero Inoxidable 316L',
+          powerReserve: '48 Horas',
+          waterResistance: '50 Metros',
+          strap: 'Piel de Caimán',
+          caseDiameter: '41 mm'
+        } : undefined)
+      };
+      products.push(normalizedProduct);
     });
     return products;
   } catch (error) {
